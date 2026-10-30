@@ -1,0 +1,23 @@
+{
+  "id": "rhythm-shaker",
+  "name": "Shakers",
+  "family": "rhythm",
+  "moods": ["calm"],
+  "colour": "#D0788A",
+  "character": "Two soft, low shakers: movement without a beat to follow",
+  "room": 0.2,
+  "trim": 1.0,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "loop": false, "files": ["hit-shaker"],
+      "pattern": {"every": 1, "at": [0, 0.5], "levels": [0.7, 0.45]},
+      "pitch": [0.98, 1.02], "level": [0.85, 1], "spread": 0.5,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" },
+    { "type": "sample", "loop": false, "files": ["hit-shaker-soft"],
+      "pattern": {"every": 2, "at": [0.75, 1.75], "levels": [0.6, 0.5]},
+      "pitch": [0.98, 1.02], "level": [0.85, 1], "spread": 0.6,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

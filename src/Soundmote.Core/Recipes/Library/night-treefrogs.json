@@ -1,0 +1,18 @@
+{
+  "id": "night-treefrogs",
+  "name": "Tree frogs",
+  "family": "night",
+  "places": ["jungle"],
+  "moods": ["warm", "mysterious"],
+  "colour": "#4E8A72",
+  "character": "Tree frogs and other night critters on a warm island",
+  "icon": "crickets",
+  "room": 0.05,
+  "trim": 0.532,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["night-treefrogs"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

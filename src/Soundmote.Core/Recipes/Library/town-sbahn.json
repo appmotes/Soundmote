@@ -1,0 +1,18 @@
+{
+  "id": "town-sbahn",
+  "name": "Underground train",
+  "family": "town",
+  "places": ["indoors"],
+  "moods": ["calm"],
+  "colour": "#5E6A8F",
+  "character": "A suburban train running between two underground stations",
+  "icon": "cafe",
+  "room": 0.05,
+  "trim": 0.514,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["town-sbahn"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

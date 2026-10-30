@@ -1,0 +1,35 @@
+<!-- Type roles as style classes (D1). Primary ink is inherited from the window, so text inside buttons keeps
+     the button's own foreground. -->
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="TextBlock.title">
+        <Setter Property="FontSize" Value="{StaticResource Text.Title.Size}" />
+        <Setter Property="FontWeight" Value="ExtraBold" />
+    </Style>
+    <Style Selector="TextBlock.row">
+        <Setter Property="FontSize" Value="{StaticResource Text.Row.Size}" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+    <Style Selector="TextBlock.meta">
+        <Setter Property="FontSize" Value="{StaticResource Text.Meta.Size}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Secondary}" />
+    </Style>
+    <Style Selector="TextBlock.brand">
+        <Setter Property="FontSize" Value="{StaticResource Text.Brand.Size}" />
+        <Setter Property="FontWeight" Value="ExtraBold" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Secondary}" />
+    </Style>
+    <Style Selector="TextBlock.clock">
+        <Setter Property="FontSize" Value="{StaticResource Text.Clock.Size}" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="FontFeatures" Value="+tnum" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="TextBlock.dock">
+        <Setter Property="FontSize" Value="{StaticResource Text.Dock.Size}" />
+        <Setter Property="FontWeight" Value="ExtraBold" />
+    </Style>
+    <Style Selector="TextBlock.number">
+        <Setter Property="FontFeatures" Value="+tnum" />
+    </Style>
+</Styles>

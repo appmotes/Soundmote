@@ -1,0 +1,23 @@
+{
+  "id": "rhythm-heart",
+  "name": "Heartbeat",
+  "family": "rhythm",
+  "moods": ["calm"],
+  "colour": "#B04A5C",
+  "character": "A slow heartbeat, lub and dub, on every beat",
+  "room": 0.15,
+  "trim": 0.407,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "loop": false, "files": ["hit-heart-lub"],
+      "pattern": {"every": 1, "at": [0]},
+      "pitch": [0.98, 1.02], "level": [0.9, 1], "spread": 0.2,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" },
+    { "type": "sample", "loop": false, "files": ["hit-heart-dub"],
+      "pattern": {"every": 1, "at": [0.3], "levels": [0.7]},
+      "pitch": [0.98, 1.02], "level": [0.9, 1], "spread": 0.2,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

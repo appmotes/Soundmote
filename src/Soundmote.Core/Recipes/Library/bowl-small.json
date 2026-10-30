@@ -1,0 +1,18 @@
+{
+  "id": "bowl-small",
+  "name": "Small bowl",
+  "family": "bells",
+  "places": ["temple"],
+  "moods": ["calm", "bright"],
+  "colour": "#C7B26A",
+  "character": "Small bowls and a chalice struck lightly, bright and clear",
+  "icon": "bowl",
+  "room": 0.2,
+  "trim": 1.533,
+  "glide": 0.05,
+  "parts": [
+    { "type": "sample", "loop": false,
+      "files": ["bowl-small-a-1", "bowl-small-b-1", "bowl-small-c-1", "bowl-small-d-1"],
+      "pitch": [0.998, 1.002], "level": [0.8, 1], "spread": 0.3, "gain": "amount" }
+  ]
+}

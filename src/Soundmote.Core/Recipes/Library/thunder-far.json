@@ -1,0 +1,19 @@
+{
+  "id": "thunder-far",
+  "name": "Distant thunder",
+  "family": "thunder",
+  "places": ["outdoors"],
+  "moods": ["calm", "mysterious"],
+  "colour": "#6E7A90",
+  "character": "Thunder rolling far off, now and then",
+  "icon": "thunder",
+  "room": 0.2,
+  "trim": 1.144,
+  "glide": 0.05,
+  "strikes": "random",
+  "parts": [
+    { "type": "sample", "loop": false,
+      "files": ["thunder-far-a-1", "thunder-far-a-2", "thunder-far-a-3", "thunder-far-a-4", "thunder-far-b-1", "thunder-far-b-2", "thunder-far-b-3", "thunder-far-b-4", "thunder-far-c-1"],
+      "pitch": [0.92, 1.04], "level": [0.6, 1], "spread": 0.6, "gain": "amount" }
+  ]
+}

@@ -1,0 +1,173 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Soundmote.App.ViewModels"
+             xmlns:c="urn:Soundmote.App.Controls"
+             x:Class="Soundmote.Desktop.Views.NewSceneView"
+             x:DataType="vm:NewSceneViewModel">
+    <UserControl.Styles>
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="ExtraBold" />
+            <Setter Property="LetterSpacing" Value="0.7" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Secondary}" />
+            <Setter Property="Margin" Value="0,0,0,8" />
+        </Style>
+        <Style Selector="ItemsControl.row">
+            <Setter Property="ItemsPanel">
+                <ItemsPanelTemplate>
+                    <WrapPanel ItemSpacing="6" LineSpacing="6" />
+                </ItemsPanelTemplate>
+            </Setter>
+        </Style>
+    </UserControl.Styles>
+
+    <!-- New scene (D14): five choices on the left, the scene as it will open on the right, on its own ground. -->
+    <Border Width="1072" Height="688" CornerRadius="24" ClipToBounds="True" Background="{DynamicResource Brush.Bg.Panel}"
+            BoxShadow="0 30 80 0 #59141822">
+        <Grid ColumnDefinitions="620,*">
+            <DockPanel Margin="32,28,32,24">
+                <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                    <TextBlock Classes="meta" FontSize="12" Text="Return creates · Escape cancels" VerticalAlignment="Center" />
+                    <Button Grid.Column="1" Classes="secondary" Height="38" Padding="16,0" Content="Cancel" Command="{Binding CancelCommand}" />
+                    <Button Grid.Column="2" Classes="primary" Height="38" Padding="18,0" Content="Create and open" Command="{Binding CreateCommand}" />
+                </Grid>
+
+                <StackPanel Spacing="18">
+                    <StackPanel Spacing="3">
+                        <TextBlock Text="New scene" FontSize="24" FontWeight="ExtraBold" />
+                        <TextBlock Classes="meta" FontSize="13" Text="Five choices, all of them changeable later. The dial on the right follows along." />
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Classes="label" Text="WHAT IS IT FOR?" />
+                        <ItemsControl Classes="row" ItemsSource="{Binding Intents}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:ChoiceViewModel">
+                                    <ToggleButton Classes="chip filter" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                                  Command="{Binding $parent[ItemsControl].((vm:NewSceneViewModel)DataContext).ChooseIntentCommand}"
+                                                  CommandParameter="{Binding}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Classes="label" Text="HOW DOES TIME MOVE?" />
+                        <ItemsControl ItemsSource="{Binding Kinds}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="3" ColumnSpacing="8" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:ChoiceViewModel">
+                                    <ToggleButton Classes="option" MinHeight="92" IsChecked="{Binding IsChecked}"
+                                                  Command="{Binding $parent[ItemsControl].((vm:NewSceneViewModel)DataContext).ChooseKindCommand}"
+                                                  CommandParameter="{Binding}">
+                                        <StackPanel Spacing="5">
+                                            <StackPanel Orientation="Horizontal" Spacing="7">
+                                                <c:Glyph Width="16" Height="16" Data="{Binding Icon}" Stroke="2.2" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding Label}" FontSize="13.5" FontWeight="ExtraBold" />
+                                            </StackPanel>
+                                            <TextBlock Classes="meta" FontSize="11.5" Text="{Binding Note}" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </ToggleButton>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="24">
+                        <StackPanel IsVisible="{Binding HasLengths}">
+                            <TextBlock Classes="label" Text="MINUTES" />
+                            <Border CornerRadius="{StaticResource Radius.Segment}" Background="{DynamicResource Brush.Bg.Hover}" Padding="3">
+                                <ItemsControl ItemsSource="{Binding Lengths}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:ChoiceViewModel">
+                                            <ToggleButton Classes="segment" Height="28" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                                          Command="{Binding $parent[ItemsControl].((vm:NewSceneViewModel)DataContext).ChooseLengthCommand}"
+                                                          CommandParameter="{Binding}" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Classes="label" Text="START FROM" />
+                            <ItemsControl Classes="row" ItemsSource="{Binding Starts}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:ChoiceViewModel">
+                                        <ToggleButton Classes="chip filter" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                                      Command="{Binding $parent[ItemsControl].((vm:NewSceneViewModel)DataContext).ChooseStartCommand}"
+                                                      CommandParameter="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Classes="label" Text="GROUND" />
+                        <ItemsControl Classes="row" ItemsSource="{Binding Grounds}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:ChoiceViewModel">
+                                    <ToggleButton Classes="option" Padding="5,5,12,5" IsChecked="{Binding IsChecked}"
+                                                  Command="{Binding $parent[ItemsControl].((vm:NewSceneViewModel)DataContext).ChooseGroundCommand}"
+                                                  CommandParameter="{Binding}">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <c:GroundScope RequestedThemeVariant="{Binding Ground}">
+                                                <Border Width="26" Height="26" CornerRadius="8" Background="{DynamicResource Brush.Bg.Ground}"
+                                                        BorderBrush="{DynamicResource Brush.Line.Edge}" BorderThickness="1">
+                                                    <Ellipse Width="8" Height="8" Fill="{DynamicResource Brush.Dial.Tip}" />
+                                                </Border>
+                                            </c:GroundScope>
+                                            <TextBlock Text="{Binding Label}" FontSize="12.5" FontWeight="Bold" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </ToggleButton>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Classes="meta" FontSize="11.5" Margin="0,7,0,0"
+                                   Text="Chosen from what it is for until you pick one." />
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Classes="label" Text="NAME" />
+                        <TextBox x:Name="NameBox" Classes="name" Height="40" FontSize="14.5" Text="{Binding Name}" />
+                    </StackPanel>
+                </StackPanel>
+            </DockPanel>
+
+            <c:GroundScope Grid.Column="1" RequestedThemeVariant="{Binding PreviewGround}">
+                <Border Background="{DynamicResource Brush.Bg.Ground}" Padding="28" TextElement.Foreground="{DynamicResource Brush.Ink.Primary}">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Bottom" Classes="meta" FontSize="11.5" TextWrapping="Wrap"
+                                   Text="{Binding PhasesText, StringFormat='Phases: {0}'}" />
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="label" Text="PREVIEW" Margin="0" />
+                            <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="ExtraBold" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Classes="meta" FontSize="12.5" Text="{Binding PreviewText}" />
+                            <Panel Width="320" Height="320" Margin="0,14,0,0">
+                                <c:Dial Rings="{Binding PreviewRings}" Length="{Binding Preview.Length}" IsHitTestVisible="False" />
+                                <TextBlock Classes="meta" Text="no sounds yet" IsVisible="{Binding IsEmpty}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Panel>
+                            <Border IsVisible="{Binding IsEmpty}" HorizontalAlignment="Center" Margin="0,14,0,0" Height="38" Padding="16,0"
+                                    CornerRadius="19" BorderBrush="{DynamicResource Brush.Line.Edge}" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                    <PathIcon Width="14" Height="14" Data="{StaticResource Icon.Plus}" />
+                                    <TextBlock Text="The first sound is added in the dial" FontSize="13" FontWeight="Bold" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+            </c:GroundScope>
+        </Grid>
+    </Border>
+</UserControl>

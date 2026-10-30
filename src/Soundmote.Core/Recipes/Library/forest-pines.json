@@ -1,0 +1,18 @@
+{
+  "id": "forest-pines",
+  "name": "Pine forest",
+  "family": "forest",
+  "places": ["forest"],
+  "moods": ["calm", "mysterious"],
+  "colour": "#4A7A4C",
+  "character": "Wind moving through high pines in a silent forest",
+  "icon": "forest",
+  "room": 0.05,
+  "trim": 0.428,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["forest-pines"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

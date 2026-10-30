@@ -1,0 +1,18 @@
+{
+  "id": "temple-bell",
+  "name": "Temple bell",
+  "family": "bells",
+  "places": ["temple"],
+  "moods": ["mysterious", "calm"],
+  "colour": "#A07A52",
+  "character": "Temple bells in Japan, a small calling bell and a great bronze one",
+  "icon": "bell",
+  "room": 0.15,
+  "trim": 1.142,
+  "glide": 0.05,
+  "parts": [
+    { "type": "sample", "loop": false,
+      "files": ["temple-bell-a-1", "temple-bell-b-1"],
+      "pitch": [0.998, 1.002], "level": [0.8, 1], "spread": 0.3, "gain": "amount" }
+  ]
+}

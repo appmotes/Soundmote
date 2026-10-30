@@ -1,0 +1,32 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:a="using:Soundmote.App.Assets"
+             x:Class="Soundmote.App.App"
+             Name="Soundmote"
+             RequestedThemeVariant="Dark">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://Soundmote.App/Assets/AppResources.axaml" />
+                <ResourceInclude Source="avares://Soundmote.App/Assets/Icons.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <!-- The scene's ground (D12). Plain Dark and Light fall back to Night and Paper. -->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceInclude x:Key="{x:Static a:Grounds.Night}" Source="avares://Soundmote.App/Assets/Themes/Night.axaml" />
+                <ResourceInclude x:Key="{x:Static a:Grounds.Ember}" Source="avares://Soundmote.App/Assets/Themes/Ember.axaml" />
+                <ResourceInclude x:Key="{x:Static a:Grounds.Paper}" Source="avares://Soundmote.App/Assets/Themes/Paper.axaml" />
+                <ResourceInclude x:Key="{x:Static a:Grounds.Sky}" Source="avares://Soundmote.App/Assets/Themes/Sky.axaml" />
+                <ResourceInclude x:Key="Dark" Source="avares://Soundmote.App/Assets/Themes/Night.axaml" />
+                <ResourceInclude x:Key="Light" Source="avares://Soundmote.App/Assets/Themes/Paper.axaml" />
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="avares://Soundmote.App/Styles/TextBlocks.axaml" />
+        <StyleInclude Source="avares://Soundmote.App/Styles/Buttons.axaml" />
+        <StyleInclude Source="avares://Soundmote.App/Styles/Dial.axaml" />
+        <StyleInclude Source="avares://Soundmote.App/Styles/Inputs.axaml" />
+    </Application.Styles>
+</Application>

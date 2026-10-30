@@ -1,0 +1,18 @@
+{
+  "id": "rain-skylight",
+  "name": "Skylight rain",
+  "family": "rain",
+  "places": ["indoors"],
+  "moods": ["calm"],
+  "colour": "#A3C4DC",
+  "character": "Steady rain on a skylight in a high, quiet room",
+  "icon": "rain",
+  "room": 0.05,
+  "trim": 0.522,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["rain-skylight"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

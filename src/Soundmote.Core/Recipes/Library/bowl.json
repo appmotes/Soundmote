@@ -1,0 +1,18 @@
+{
+  "id": "bowl",
+  "name": "Singing bowl",
+  "family": "bells",
+  "places": ["temple"],
+  "moods": ["calm"],
+  "colour": "#D9A441",
+  "character": "A Tibetan singing bowl struck once, ringing out",
+  "icon": "bowl",
+  "room": 0.2,
+  "trim": 1.152,
+  "glide": 0.05,
+  "parts": [
+    { "type": "sample", "loop": false,
+      "files": ["bowl-a-1", "bowl-b-1", "bowl-c-1"],
+      "pitch": [0.998, 1.002], "level": [0.85, 1], "spread": 0.3, "gain": "amount" }
+  ]
+}

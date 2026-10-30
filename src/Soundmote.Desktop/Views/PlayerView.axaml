@@ -1,0 +1,694 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Soundmote.App.ViewModels"
+             xmlns:c="urn:Soundmote.App.Controls"
+             x:Class="Soundmote.Desktop.Views.PlayerView"
+             x:DataType="vm:PlayerViewModel">
+    <UserControl.Resources>
+        <ItemsPanelTemplate x:Key="Wrap">
+            <WrapPanel ItemSpacing="5" LineSpacing="5" />
+        </ItemsPanelTemplate>
+        <DataTemplate x:Key="ChoiceChip" x:DataType="vm:ChoiceItem">
+            <ToggleButton Classes="chip" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                          Command="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).PlayEditor.ChooseCommand}" CommandParameter="{Binding}" />
+        </DataTemplate>
+        <DataTemplate x:Key="PlaceChip" x:DataType="vm:ChoiceItem">
+            <ToggleButton Classes="chip" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                          Command="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).PlaceEditor.ChooseCommand}" CommandParameter="{Binding}" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="Border.panel">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Panel}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Line.Edge}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="{StaticResource Radius.Panel}" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
+        <!-- A place or mood menu's pop-up (D20) -->
+        <Style Selector="Border.panel.menu">
+            <Setter Property="Width" Value="300" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="BoxShadow" Value="{DynamicResource Shadow.Float}" />
+        </Style>
+        <!-- A place or mood menu's button while it narrows: filled, as a checked chip -->
+        <Style Selector="Button.chip.set /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.OnPrimary}" />
+        </Style>
+        <Style Selector="Border.phase">
+            <Setter Property="Padding" Value="10,8" />
+            <Setter Property="CornerRadius" Value="{StaticResource Radius.Row}" />
+        </Style>
+        <Style Selector="Border.phase.current">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Current}" />
+        </Style>
+        <Style Selector="Border.phase TextBlock.name">
+            <Setter Property="FontSize" Value="{StaticResource Text.Row.Size}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="Border.phase.current TextBlock.name">
+            <Setter Property="FontWeight" Value="ExtraBold" />
+        </Style>
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontSize" Value="{StaticResource Text.Meta.Size}" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Secondary}" />
+        </Style>
+        <Style Selector="Border.field">
+            <Setter Property="Padding" Value="10,4,4,4" />
+            <Setter Property="CornerRadius" Value="{StaticResource Radius.Row}" />
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+        </Style>
+        <Style Selector="StackPanel.muted">
+            <Setter Property="Opacity" Value="0.45" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="*,Auto" ColumnDefinitions="Auto,*,Auto">
+
+        <!-- Left: the scene and its phases -->
+        <Border Grid.Row="0" Grid.Column="0" Classes="panel" Width="{StaticResource Size.Panel.Left}" Margin="32,8,0,0"
+                Padding="{StaticResource Thickness.Panel}" IsVisible="{Binding !IsAdding}">
+            <StackPanel Spacing="16">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="title" Text="{Binding Name}" />
+                    <TextBlock Classes="meta" Text="{Binding Summary}" />
+                </StackPanel>
+                <ItemsControl ItemsSource="{Binding Phases}" IsVisible="{Binding HasPhases}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Spacing="4" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:PhaseViewModel">
+                            <Border Classes="phase" Classes.current="{Binding IsCurrent}">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Classes="name" Text="{Binding Title}" />
+                                    <TextBlock Grid.Column="1" Classes="meta number" Text="{Binding Range}" VerticalAlignment="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- How a journey ends (D17): in silence, or by waking at a time -->
+                <Border Classes="field" Padding="10,8" IsVisible="{Binding CanWake}">
+                    <StackPanel Spacing="4">
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="4">
+                            <TextBlock Classes="name" Text="{Binding EndText}" VerticalAlignment="Center" />
+                            <Button Grid.Column="1" Classes="glyph" Width="24" Height="24" Content="−" IsVisible="{Binding HasWake}"
+                                    Command="{Binding EarlierWakeCommand}" ToolTip.Tip="15 minutes earlier" />
+                            <TextBlock Grid.Column="2" Classes="row number" Text="{Binding WakeText}" IsVisible="{Binding HasWake}"
+                                       VerticalAlignment="Center" />
+                            <Button Grid.Column="3" Classes="glyph" Width="24" Height="24" Content="+" IsVisible="{Binding HasWake}"
+                                    Command="{Binding LaterWakeCommand}" ToolTip.Tip="15 minutes later" />
+                        </Grid>
+                        <TextBlock Classes="meta" TextWrapping="Wrap" LineHeight="16" Text="{Binding WakeNote}" />
+                        <Button Classes="link" Padding="0,2" HorizontalAlignment="Left" Content="{Binding WakeToggleText}"
+                                Command="{Binding ToggleWakeCommand}" />
+                    </StackPanel>
+                </Border>
+                <TextBlock Classes="meta" TextWrapping="Wrap" LineHeight="17"
+                           Text="Drag along the ticks to move the hand, or use the arrow keys." />
+            </StackPanel>
+        </Border>
+
+        <!-- Centre: the dial -->
+        <Panel Grid.Row="0" Grid.Column="1" Margin="8,0">
+            <c:Dial x:Name="SceneDial"
+                    Rings="{Binding Rings}"
+                    Position="{Binding Position}"
+                    Length="{Binding Length}"
+                    SelectedIndex="{Binding SelectedIndex}"
+                    SeekCommand="{Binding SeekCommand}"
+                    ShapeCommand="{Binding ReshapeCommand}"
+                    PlayCommand="{Binding ChangePlayCommand}" />
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" Spacing="2">
+                <TextBlock Classes="clock" Text="{Binding Clock}" />
+                <TextBlock Classes="meta" Text="{Binding ClockCaption}" HorizontalAlignment="Center" />
+                <Border IsVisible="{Binding IsTrying}" HorizontalAlignment="Center" Margin="0,8,0,0" Padding="10,4"
+                        CornerRadius="12" Background="{DynamicResource Brush.Bg.Hover}">
+                    <TextBlock Classes="meta" FontWeight="Bold" Text="{Binding TrialText}" />
+                </Border>
+            </StackPanel>
+        </Panel>
+
+        <!-- Right: one row per ring, and the selected ring's panel below; scrolls when the panel is tall -->
+        <ScrollViewer Grid.Row="0" Grid.Column="2" Width="{StaticResource Size.Panel.Right}" Margin="0,8,32,0"
+                      IsVisible="{Binding !IsAdding}" VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="12">
+        <Border Classes="panel" Padding="{StaticResource Thickness.PanelList}">
+            <StackPanel Spacing="2">
+                <ItemsControl ItemsSource="{Binding Layers}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Spacing="2" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:LayerViewModel">
+                            <Button Classes="row" Background="{Binding Background}"
+                                    Command="{Binding $parent[ItemsControl].((vm:PlayerViewModel)DataContext).SelectCommand}"
+                                    CommandParameter="{Binding}">
+                                <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
+                                    <c:SoundBadge Size="28" Data="{Binding Icon}" Stroke="{Binding IconStroke}" Colour="{Binding Colour}"
+                                                  VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" Classes.muted="{Binding IsMuted}">
+                                        <TextBlock Classes="row" Text="{Binding Name}" />
+                                        <TextBlock Classes="meta" Text="{Binding Description}" Margin="0,1,0,0" TextTrimming="CharacterEllipsis" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center" Spacing="5">
+                                        <TextBlock Classes="meta number" Text="{Binding AmountText}" HorizontalAlignment="Right" />
+                                        <c:PlaceMeter Width="34" Height="6" HorizontalAlignment="Right" Pan="{Binding Pan}"
+                                                      Spread="{Binding Place.Width}" Colour="{Binding Colour}" ToolTip.Tip="{Binding WhereText}" />
+                                    </StackPanel>
+                                    <Button Grid.Column="3" Classes="glyph"
+                                            Command="{Binding $parent[ItemsControl].((vm:PlayerViewModel)DataContext).ToggleMuteCommand}"
+                                            CommandParameter="{Binding}"
+                                            ToolTip.Tip="{Binding Key, StringFormat='Mute ({0})'}">
+                                        <Panel>
+                                            <PathIcon Width="14" Height="14" Data="{StaticResource Icon.Speaker}" IsVisible="{Binding !IsMuted}" />
+                                            <PathIcon Width="14" Height="14" Data="{StaticResource Icon.SpeakerOff}" IsVisible="{Binding IsMuted}" />
+                                        </Panel>
+                                    </Button>
+                                </Grid>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Classes="row" Command="{Binding OpenAddCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <PathIcon Width="12" Height="12" Data="{StaticResource Icon.Plus}" />
+                        <TextBlock Classes="row" Text="Add a sound" />
+                    </StackPanel>
+                </Button>
+                <TextBlock Classes="meta" TextWrapping="Wrap" LineHeight="17" Margin="10,10,10,4"
+                           Text="Click a ring or a row to change how and where it plays. Number keys mute." />
+            </StackPanel>
+        </Border>
+
+        <!-- The ring's panel (D8, D11): how it plays, and that way's settings -->
+        <Border Classes="panel" Padding="{StaticResource Thickness.Panel}" IsVisible="{Binding HasSelection}">
+            <StackPanel Spacing="12" DataContext="{Binding PlayEditor}" x:DataType="vm:PlayEditorViewModel">
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="6">
+                    <c:SoundBadge Size="28" Data="{Binding Layer.Icon}" Stroke="{Binding Layer.IconStroke}" Colour="{Binding Layer.Colour}"
+                                  VerticalAlignment="Center" Margin="0,0,4,0" />
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Classes="row" Text="{Binding Layer.Name}" />
+                        <TextBlock Classes="meta" Text="{Binding Layer.Description}" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <Button Grid.Column="2" Classes="link" Content="Reset" IsVisible="{Binding IsShape}" IsEnabled="{Binding Layer.IsReshaped}"
+                            Command="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).ResetShapeCommand}" />
+                    <Button Grid.Column="3" Classes="link" Content="Remove"
+                            Command="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).RemoveSelectedCommand}" />
+                </Grid>
+
+                <Border Padding="3" CornerRadius="15" Background="{DynamicResource Brush.Bg.Hover}">
+                    <ItemsControl ItemsSource="{Binding Modes}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="4" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ChoiceItem">
+                                <ToggleButton Classes="mode" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                              Command="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).PlayEditor.ChooseCommand}" CommandParameter="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+
+                <!-- Shape -->
+                <StackPanel Spacing="12" IsVisible="{Binding IsShape}">
+                    <c:CurveEditor Height="112"
+                                   Curve="{Binding Layer.Curve}"
+                                   Colour="{Binding Layer.Colour}"
+                                   Position="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).Position}"
+                                   Length="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).Length}"
+                                   Marks="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).PhaseMarks}"
+                                   ChangeCommand="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).ReshapeSelectedCommand}" />
+                    <ItemsControl ItemsSource="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).Presets}" ItemsPanel="{StaticResource Wrap}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ShapePreset">
+                                <Button Classes="chip" Content="{Binding Name}"
+                                        Command="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).ApplyPresetCommand}" CommandParameter="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Classes="meta" TextWrapping="Wrap" LineHeight="17"
+                               Text="Drag a point out to make it louder. Double-click to add a point, or to remove one." />
+                </StackPanel>
+
+                <!-- On/off -->
+                <StackPanel Spacing="10" IsVisible="{Binding IsOnOff}">
+                    <ItemsControl ItemsSource="{Binding Stretches}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Spacing="4" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:StretchItem">
+                                <Border Classes="field">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                                        <TextBlock Classes="meta" Text="On" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="1" Classes="row number" Text="{Binding Text}" VerticalAlignment="Center" />
+                                        <Button Grid.Column="2" Classes="glyph" Width="24" Height="24" ToolTip.Tip="Remove this stretch"
+                                                Command="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).PlayEditor.RemoveStretchCommand}" CommandParameter="{Binding}">
+                                            <PathIcon Width="10" Height="10" Data="{StaticResource Icon.Close}" />
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Button Classes="link" HorizontalAlignment="Left" Content="+ Add a stretch" Command="{Binding AddStretchCommand}" />
+                    <TextBlock Classes="label" Text="Fade in and out" />
+                    <ItemsControl ItemsSource="{Binding Fades}" ItemsPanel="{StaticResource Wrap}" ItemTemplate="{StaticResource ChoiceChip}" />
+                    <TextBlock Classes="label" Text="Level" />
+                    <Slider Minimum="0.05" Maximum="1" Value="{Binding Level}" />
+                    <TextBlock Classes="meta" TextWrapping="Wrap" LineHeight="17"
+                               Text="Drag the ends of a stretch on the ring. Double-click the ring to add one, an end to remove it." />
+                </StackPanel>
+
+                <!-- Every -->
+                <StackPanel Spacing="10" IsVisible="{Binding IsEvery}">
+                    <TextBlock Classes="label" Text="Every" />
+                    <ItemsControl ItemsSource="{Binding Intervals}" ItemsPanel="{StaticResource Wrap}" ItemTemplate="{StaticResource ChoiceChip}" />
+                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="6">
+                        <TextBlock Classes="label" Text="First at" VerticalAlignment="Center" />
+                        <Button Grid.Column="1" Classes="glyph" Content="−" Command="{Binding EarlierFirstCommand}" />
+                        <TextBlock Grid.Column="2" Classes="row number" Text="{Binding FirstText}" VerticalAlignment="Center" MinWidth="40" TextAlignment="Center" />
+                        <Button Grid.Column="3" Classes="glyph" Content="+" Command="{Binding LaterFirstCommand}" />
+                    </Grid>
+                    <TextBlock Classes="label" Text="Strength" />
+                    <Slider Minimum="0.05" Maximum="1" Value="{Binding Level}" />
+                    <TextBlock Classes="meta" TextWrapping="Wrap" LineHeight="17"
+                               Text="Each dot is one strike. The hand plays it as it passes." />
+                </StackPanel>
+
+                <!-- Random -->
+                <StackPanel Spacing="10" IsVisible="{Binding IsRandom}">
+                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="6">
+                        <TextBlock Classes="label" Text="About" VerticalAlignment="Center" />
+                        <Button Grid.Column="1" Classes="glyph" Content="−" Command="{Binding FewerStrikesCommand}" />
+                        <TextBlock Grid.Column="2" Classes="row number" Text="{Binding RateText}" VerticalAlignment="Center" />
+                        <Button Grid.Column="3" Classes="glyph" Content="+" Command="{Binding MoreStrikesCommand}" />
+                    </Grid>
+                    <TextBlock Classes="label" Text="Never closer than" />
+                    <ItemsControl ItemsSource="{Binding Gaps}" ItemsPanel="{StaticResource Wrap}" ItemTemplate="{StaticResource ChoiceChip}" />
+                    <TextBlock Classes="label" Text="Strength varies" />
+                    <ItemsControl ItemsSource="{Binding Varies}" ItemsPanel="{StaticResource Wrap}" ItemTemplate="{StaticResource ChoiceChip}" />
+                    <TextBlock Classes="label" Text="Busiest" />
+                    <ItemsControl ItemsSource="{Binding Busies}" ItemsPanel="{StaticResource Wrap}" ItemTemplate="{StaticResource ChoiceChip}" />
+                    <TextBlock Classes="label" Text="Strength" />
+                    <Slider Minimum="0.05" Maximum="1" Value="{Binding Level}" />
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="meta" TextWrapping="Wrap" LineHeight="17" VerticalAlignment="Center"
+                                   Text="The faint band is how busy it gets." />
+                        <Button Grid.Column="1" Classes="link" Content="Shuffle" Command="{Binding ShuffleCommand}"
+                                ToolTip.Tip="Same settings, new places" />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Where the ring is heard (D15): left to right, how wide, and how that moves -->
+        <Border Classes="panel" Padding="{StaticResource Thickness.Panel}" IsVisible="{Binding HasSelection}">
+            <StackPanel Spacing="10" DataContext="{Binding PlaceEditor}" x:DataType="vm:PlaceEditorViewModel">
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Classes="row" Text="Where it is heard" />
+                    <TextBlock Grid.Column="1" Classes="meta" Text="{Binding Layer.WhereText}" VerticalAlignment="Center" />
+                </Grid>
+                <c:PlaceMeter Height="14" Pan="{Binding Layer.Pan}" Spread="{Binding Layer.Place.Width}" Colour="{Binding Layer.Colour}" />
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                    <TextBlock Classes="label" Text="Left" VerticalAlignment="Center" />
+                    <Slider Grid.Column="1" Minimum="-1" Maximum="1" Value="{Binding Pan}" />
+                    <TextBlock Grid.Column="2" Classes="label" Text="Right" VerticalAlignment="Center" />
+                </Grid>
+                <TextBlock Classes="label" Text="Width" />
+                <ItemsControl ItemsSource="{Binding Widths}" ItemsPanel="{StaticResource Wrap}" ItemTemplate="{StaticResource PlaceChip}" />
+                <Border Padding="3" CornerRadius="15" Background="{DynamicResource Brush.Bg.Hover}">
+                    <ItemsControl ItemsSource="{Binding Moves}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="4" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ChoiceItem">
+                                <ToggleButton Classes="mode" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                              Command="{Binding $parent[UserControl].((vm:PlayerViewModel)DataContext).PlaceEditor.ChooseCommand}" CommandParameter="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+                <StackPanel Spacing="10" IsVisible="{Binding HasRange}">
+                    <TextBlock Classes="label" Text="How far" />
+                    <ItemsControl ItemsSource="{Binding Ranges}" ItemsPanel="{StaticResource Wrap}" ItemTemplate="{StaticResource PlaceChip}" />
+                </StackPanel>
+                <StackPanel Spacing="10" IsVisible="{Binding IsWander}">
+                    <TextBlock Classes="label" Text="One swing in" />
+                    <ItemsControl ItemsSource="{Binding Swings}" ItemsPanel="{StaticResource Wrap}" ItemTemplate="{StaticResource PlaceChip}" />
+                </StackPanel>
+                <StackPanel Spacing="10" IsVisible="{Binding IsCross}">
+                    <TextBlock Classes="label" Text="Over the turn" />
+                    <ItemsControl ItemsSource="{Binding Ways}" ItemsPanel="{StaticResource Wrap}" ItemTemplate="{StaticResource PlaceChip}" />
+                </StackPanel>
+                <StackPanel Spacing="10" IsVisible="{Binding IsFlit}">
+                    <TextBlock Classes="label" Text="Each move" />
+                    <ItemsControl ItemsSource="{Binding Glides}" ItemsPanel="{StaticResource Wrap}" ItemTemplate="{StaticResource PlaceChip}" />
+                    <TextBlock Classes="meta" TextWrapping="Wrap" LineHeight="17" Text="{Binding FlitText}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- The scene's tempo (D23, A16): shown on a rhythm's ring, the same for every rhythm in the scene -->
+        <Border Classes="panel" Padding="{StaticResource Thickness.Panel}" IsVisible="{Binding ShowsTempo}">
+            <StackPanel Spacing="10">
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Classes="row" Text="Tempo" />
+                    <TextBlock Grid.Column="1" Classes="meta" Text="{Binding TempoText}" VerticalAlignment="Center" />
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                    <TextBlock Classes="label" Text="Slow" VerticalAlignment="Center" />
+                    <Slider Grid.Column="1" Minimum="40" Maximum="120" SmallChange="1" LargeChange="5" Value="{Binding Tempo}" />
+                    <TextBlock Grid.Column="2" Classes="label" Text="Quick" VerticalAlignment="Center" />
+                </Grid>
+                <TextBlock Classes="meta" TextWrapping="Wrap" LineHeight="17"
+                           Text="The whole scene keeps one tempo: every rhythm in it follows, in time. A resting pulse is about 60." />
+            </StackPanel>
+        </Border>
+
+        <!-- How much the ring wavers in pitch (D21, S17): only for a sound that reads it, as a pad -->
+        <Border Classes="panel" Padding="{StaticResource Thickness.Panel}" IsVisible="{Binding ShowsWaver}">
+            <StackPanel Spacing="10">
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Classes="row" Text="Waver" />
+                    <TextBlock Grid.Column="1" Classes="meta" Text="{Binding WaverText}" VerticalAlignment="Center" />
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                    <TextBlock Classes="label" Text="Still" VerticalAlignment="Center" />
+                    <Slider Grid.Column="1" Minimum="0" Maximum="1" Value="{Binding Waver}" />
+                    <TextBlock Grid.Column="2" Classes="label" Text="Wavers" VerticalAlignment="Center" />
+                </Grid>
+                <TextBlock Classes="meta" TextWrapping="Wrap" LineHeight="17"
+                           Text="How far its pitch drifts and flutters, up to half a semitone, at random. It stays in key with the rest." />
+            </StackPanel>
+        </Border>
+        </StackPanel>
+        </ScrollViewer>
+
+        <!-- Add a sound (D9, D20): replaces both side panels; the dial moves left to make room -->
+        <Border Grid.Row="0" Grid.Column="2" Classes="panel" Width="{StaticResource Size.Panel.Add}" Margin="0,8,32,0"
+                VerticalAlignment="Stretch" Padding="{StaticResource Thickness.Panel}" IsVisible="{Binding IsAdding}">
+            <DockPanel DataContext="{Binding AddSound}" x:DataType="vm:AddSoundViewModel">
+                <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" Margin="0,0,0,14">
+                    <Button Classes="glyph" Command="{Binding BackCommand}" IsVisible="{Binding IsOpen}" ToolTip.Tip="All sounds"
+                            VerticalAlignment="Top">
+                        <PathIcon Width="14" Height="14" Data="{StaticResource Icon.Back}" />
+                    </Button>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Classes="title" Text="{Binding Title}" />
+                        <TextBlock Classes="meta" Text="{Binding Subtitle}" />
+                    </StackPanel>
+                    <Button Grid.Column="2" Classes="glyph" Command="{Binding CancelCommand}" ToolTip.Tip="Close (Esc)"
+                            VerticalAlignment="Top">
+                        <PathIcon Width="12" Height="12" Data="{StaticResource Icon.Close}" />
+                    </Button>
+                </Grid>
+                <TextBox x:Name="Search" DockPanel.Dock="Top" Classes="search" Margin="0,0,0,12"
+                         Text="{Binding Query}" PlaceholderText="{Binding SearchHint}">
+                    <TextBox.InnerLeftContent>
+                        <PathIcon Width="14" Height="14" Margin="10,0,0,0" Data="{StaticResource Icon.Search}"
+                                  Foreground="{DynamicResource Brush.Ink.Secondary}" />
+                    </TextBox.InnerLeftContent>
+                </TextBox>
+
+                <!-- A place and a mood narrow what shows (D20): two menus on one line; each lists only words the sounds in view have -->
+                <Panel DockPanel.Dock="Top" Margin="0,0,0,12">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <Button x:Name="PlaceButton" Classes="chip" Classes.set="{Binding IsPlaceSet}" Height="30" Padding="12,0"
+                                Command="{Binding TogglePlaceMenuCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="{Binding PlaceText}" VerticalAlignment="Center" />
+                                <PathIcon Width="8" Height="8" Data="{StaticResource Icon.Down}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="MoodButton" Classes="chip" Classes.set="{Binding IsMoodSet}" Height="30" Padding="12,0"
+                                Command="{Binding ToggleMoodMenuCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="{Binding MoodText}" VerticalAlignment="Center" />
+                                <PathIcon Width="8" Height="8" Data="{StaticResource Icon.Down}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <Popup IsOpen="{Binding IsPlaceMenuOpen, Mode=TwoWay}" PlacementTarget="{Binding #PlaceButton}"
+                           Placement="BottomEdgeAlignedLeft" VerticalOffset="6" IsLightDismissEnabled="True">
+                        <Border Classes="panel menu">
+                            <ItemsControl ItemsSource="{Binding Places}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel ItemSpacing="5" LineSpacing="5" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:TagChipViewModel">
+                                        <ToggleButton Classes="chip" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                                      Command="{Binding $parent[ItemsControl].((vm:AddSoundViewModel)DataContext).SetPlaceCommand}"
+                                                      CommandParameter="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
+                    </Popup>
+                    <Popup IsOpen="{Binding IsMoodMenuOpen, Mode=TwoWay}" PlacementTarget="{Binding #MoodButton}"
+                           Placement="BottomEdgeAlignedLeft" VerticalOffset="6" IsLightDismissEnabled="True">
+                        <Border Classes="panel menu">
+                            <ItemsControl ItemsSource="{Binding Moods}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel ItemSpacing="5" LineSpacing="5" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:TagChipViewModel">
+                                        <ToggleButton Classes="chip" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                                      Command="{Binding $parent[ItemsControl].((vm:AddSoundViewModel)DataContext).SetMoodCommand}"
+                                                      CommandParameter="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
+                    </Popup>
+                </Panel>
+
+                <Border DockPanel.Dock="Top" IsVisible="{Binding HasInScene}" Margin="0,0,0,12" Padding="10,7" CornerRadius="12"
+                        Background="{DynamicResource Brush.Bg.Hover}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <TextBlock Classes="meta" FontSize="10.5" FontWeight="ExtraBold" LetterSpacing="0.6" Text="IN THIS SCENE"
+                                   Margin="0,4,0,0" />
+                        <ItemsControl Grid.Column="1" ItemsSource="{Binding InScene}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel ItemSpacing="5" LineSpacing="5" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:LayerViewModel">
+                                    <Border Height="22" Padding="8,0" CornerRadius="11" Background="{DynamicResource Brush.Bg.Panel}">
+                                        <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                                            <Ellipse Width="7" Height="7" Fill="{Binding Swatch}" VerticalAlignment="Center" />
+                                            <TextBlock FontSize="11.5" FontWeight="Bold" Text="{Binding Name}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
+
+                <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,*" ColumnSpacing="8" Margin="0,14,0,0">
+                    <Button Classes="secondary" HorizontalAlignment="Stretch" Content="Cancel" Command="{Binding CancelCommand}" />
+                    <Button Grid.Column="1" Classes="primary" HorizontalAlignment="Stretch" Content="Add as a ring"
+                            Command="{Binding AddCommand}" />
+                </Grid>
+                <StackPanel DockPanel.Dock="Bottom" Spacing="8" Margin="0,14,0,0" IsVisible="{Binding ShowsShapes}">
+                    <TextBlock Classes="meta" FontWeight="Bold" Text="How it moves through the scene" />
+                    <ItemsControl ItemsSource="{Binding Shapes}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel ItemSpacing="5" LineSpacing="5" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ShapeChoiceViewModel">
+                                <ToggleButton Classes="chip" Content="{Binding Name}" IsChecked="{Binding IsChecked}"
+                                              Command="{Binding $parent[ItemsControl].((vm:AddSoundViewModel)DataContext).ChooseShapeCommand}"
+                                              CommandParameter="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Classes="meta" TextWrapping="Wrap" LineHeight="17"
+                               Text="Click a sound to hear it in the scene as a dashed ring. Add it to keep it." />
+                </StackPanel>
+                <!-- Goes with (D20): sounds of other families that share a place or a mood with the one on trial -->
+                <Border DockPanel.Dock="Bottom" IsVisible="{Binding HasGoesWith}" Margin="0,14,0,0" Padding="10,7" CornerRadius="12"
+                        Background="{DynamicResource Brush.Bg.Hover}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <TextBlock Classes="meta" FontSize="10.5" FontWeight="ExtraBold" LetterSpacing="0.6" Text="GOES WITH"
+                                   Margin="0,5,0,0" />
+                        <ItemsControl Grid.Column="1" ItemsSource="{Binding GoesWith}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel ItemSpacing="5" LineSpacing="5" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:SoundTileViewModel">
+                                    <Button Classes="chip" Background="{DynamicResource Brush.Bg.Panel}" ToolTip.Tip="{Binding Character}"
+                                            Command="{Binding $parent[ItemsControl].((vm:AddSoundViewModel)DataContext).TryCommand}"
+                                            CommandParameter="{Binding}">
+                                        <StackPanel Orientation="Horizontal" Spacing="6">
+                                            <Ellipse Width="7" Height="7" Fill="{Binding Swatch}" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
+
+                <Panel>
+                    <!-- The families (D20): every one in two columns of rows, a family without sounds yet faint -->
+                    <ScrollViewer IsVisible="{Binding ShowsFamilies}">
+                        <ItemsControl ItemsSource="{Binding VisibleFamilies}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="2" ColumnSpacing="8" RowSpacing="4" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:FamilyTileViewModel">
+                                    <Button Classes="tile" IsEnabled="{Binding !IsComing}" ToolTip.Tip="{Binding CountText}"
+                                            Command="{Binding $parent[ItemsControl].((vm:AddSoundViewModel)DataContext).OpenFamilyCommand}"
+                                            CommandParameter="{Binding}">
+                                        <Border Height="40" Padding="6,0,10,0" CornerRadius="12" BorderThickness="1"
+                                                BorderBrush="{DynamicResource Brush.Line.Edge}">
+                                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8" VerticalAlignment="Center">
+                                                <c:SoundBadge Size="30" Data="{Binding Icon}" Stroke="{Binding IconStroke}" Colour="{Binding Colour}" />
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="3">
+                                                    <TextBlock Classes="row" FontSize="12.5" Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+                                                    <ItemsControl ItemsSource="{Binding Dots}" IsVisible="{Binding !IsComing}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal" Spacing="2" />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate x:DataType="IBrush">
+                                                                <Ellipse Width="5" Height="5" Fill="{Binding}" />
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="2" Classes="meta number" FontSize="11.5" Text="{Binding CountShort}"
+                                                           VerticalAlignment="Center" />
+                                            </Grid>
+                                        </Border>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!-- The sounds: of the opened family, or every match to a search -->
+                    <ScrollViewer IsVisible="{Binding ShowsSounds}">
+                        <ItemsControl ItemsSource="{Binding Visible}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="2" ColumnSpacing="8" RowSpacing="8" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:SoundTileViewModel">
+                                    <Button Classes="tile" ToolTip.Tip="{Binding Character}"
+                                            Command="{Binding $parent[ItemsControl].((vm:AddSoundViewModel)DataContext).TryCommand}"
+                                            CommandParameter="{Binding}">
+                                        <Panel>
+                                            <Border Height="60" Padding="10,0" CornerRadius="12" BorderThickness="1"
+                                                    BorderBrush="{DynamicResource Brush.Line.Edge}">
+                                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" VerticalAlignment="Center">
+                                                    <c:SoundBadge Size="38" Data="{Binding Icon}" Stroke="{Binding IconStroke}" Colour="{Binding Colour}" />
+                                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                        <TextBlock Classes="row" FontSize="12.5" Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+                                                        <TextBlock Classes="meta" FontSize="11" Text="{Binding Sub}" TextTrimming="CharacterEllipsis" />
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                            <Border CornerRadius="12" BorderThickness="2" BorderBrush="{Binding Swatch}"
+                                                    IsVisible="{Binding IsTrying}" />
+                                        </Panel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Panel>
+            </DockPanel>
+        </Border>
+
+        <!-- Dock (D5) -->
+        <Border Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="0,8,0,24"
+                Width="{StaticResource Size.Dock.Width}" Height="{StaticResource Size.Dock.Height}"
+                Padding="{StaticResource Thickness.Dock}" CornerRadius="{StaticResource Radius.Dock}"
+                Background="{DynamicResource Brush.Bg.Panel}" BorderBrush="{DynamicResource Brush.Line.Edge}" BorderThickness="1"
+                BoxShadow="{DynamicResource Shadow.Float}">
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="14">
+                <Button Classes="play" Command="{Binding TogglePlayCommand}" IsEnabled="{Binding CanPlay}"
+                        ToolTip.Tip="Play or pause (space)">
+                    <Panel>
+                        <PathIcon Width="18" Height="18" Data="{StaticResource Icon.Play}" IsVisible="{Binding !IsPlaying}" />
+                        <PathIcon Width="18" Height="18" Data="{StaticResource Icon.Pause}" IsVisible="{Binding IsPlaying}" />
+                    </Panel>
+                </Button>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Classes="dock" Text="{Binding Name}" />
+                    <TextBlock Classes="meta number" Text="{Binding Status}" />
+                </StackPanel>
+                <Border Grid.Column="2" VerticalAlignment="Center" Padding="3" CornerRadius="19"
+                        Background="{DynamicResource Brush.Bg.Hover}" ToolTip.Tip="Preview speed: hear a whole scene in minutes">
+                    <ItemsControl ItemsSource="{Binding Speeds}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:SpeedViewModel">
+                                <ToggleButton Classes="segment" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                              Command="{Binding $parent[ItemsControl].((vm:PlayerViewModel)DataContext).SetSpeedCommand}"
+                                              CommandParameter="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+                <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <PathIcon Width="15" Height="15" Data="{StaticResource Icon.Speaker}" Foreground="{DynamicResource Brush.Ink.Secondary}" />
+                    <Slider Width="{StaticResource Size.Volume.Width}" Minimum="0" Maximum="1" Value="{Binding Volume}"
+                            VerticalAlignment="Center" ToolTip.Tip="Volume" />
+                </StackPanel>
+                <Button Grid.Column="4" Classes="glyph" Width="36" Height="36" CornerRadius="18"
+                        BorderThickness="1" BorderBrush="{DynamicResource Brush.Line.Edge}"
+                        Command="{Binding OpenAddCommand}" ToolTip.Tip="Add a sound">
+                    <PathIcon Width="14" Height="14" Data="{StaticResource Icon.Plus}" Foreground="{DynamicResource Brush.Ink.Primary}" />
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

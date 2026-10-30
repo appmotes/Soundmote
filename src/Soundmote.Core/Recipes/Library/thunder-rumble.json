@@ -1,0 +1,19 @@
+{
+  "id": "thunder-rumble",
+  "name": "Thunder rumble",
+  "family": "thunder",
+  "places": ["outdoors"],
+  "moods": ["calm", "mysterious"],
+  "colour": "#737C92",
+  "character": "Deep, slow rumbling, no crack",
+  "icon": "thunder",
+  "room": 0.15,
+  "trim": 1.121,
+  "glide": 0.05,
+  "strikes": "random",
+  "parts": [
+    { "type": "sample", "loop": false,
+      "files": ["thunder-rumble-a-1", "thunder-rumble-b-1", "thunder-rumble-c-1", "thunder-rumble-c-2"],
+      "pitch": [0.92, 1.02], "level": [0.6, 1], "spread": 0.5, "gain": "amount" }
+  ]
+}

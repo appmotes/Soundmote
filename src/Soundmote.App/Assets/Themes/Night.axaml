@@ -1,0 +1,46 @@
+<!-- Night: the ground of a sleep scene (D12). Read with DynamicResource. Ring colours belong to the sounds, not here. -->
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="Color.Bg.Ground">#FF2E3A57</Color> <!-- Window: the scene's ground -->
+    <Color x:Key="Color.Bg.Panel">#FF151C2C</Color> <!-- Side panels, dock, dial face -->
+    <Color x:Key="Color.Bg.Hover">#12FFFFFF</Color> <!-- Pointer-over wash on rows and buttons -->
+    <Color x:Key="Color.Bg.Current">#12FFFFFF</Color> <!-- The phase the hand is in -->
+    <Color x:Key="Color.Bg.Track">#47B3BCCD</Color> <!-- Volume track, segment track -->
+    <Color x:Key="Color.Ink.Primary">#FFF1F3F8</Color> <!-- Names, clock -->
+    <Color x:Key="Color.Ink.Secondary">#FFB3BCCD</Color> <!-- Descriptions, amounts, labels -->
+    <Color x:Key="Color.Ink.OnPrimary">#FF151C2C</Color> <!-- Icon on the play button, selected segment -->
+    <Color x:Key="Color.Line.Edge">#1AFFFFFF</Color> <!-- Panel and dock edges -->
+    <Color x:Key="Color.Dial.Guide">#12F1F3F8</Color> <!-- Faint circle behind each ring -->
+    <Color x:Key="Color.Dial.Tick">#B3B3BCCD</Color> <!-- Minute ticks -->
+    <Color x:Key="Color.Dial.Tip">#FFF2D49B</Color> <!-- The dot at the end of the hand -->
+    <Color x:Key="Color.Bg.Card">#FF2E3A57</Color> <!-- A scene of this ground in the library -->
+    <!-- How much darker ring colours are drawn, in lightness 0–1 (D12) -->
+    <x:Double x:Key="Ring.Shade">0</x:Double>
+
+    <SolidColorBrush x:Key="Brush.Bg.Ground" Color="{StaticResource Color.Bg.Ground}" />
+    <SolidColorBrush x:Key="Brush.Bg.Panel" Color="{StaticResource Color.Bg.Panel}" />
+    <SolidColorBrush x:Key="Brush.Bg.Hover" Color="{StaticResource Color.Bg.Hover}" />
+    <SolidColorBrush x:Key="Brush.Bg.Current" Color="{StaticResource Color.Bg.Current}" />
+    <SolidColorBrush x:Key="Brush.Bg.Track" Color="{StaticResource Color.Bg.Track}" />
+    <SolidColorBrush x:Key="Brush.Ink.Primary" Color="{StaticResource Color.Ink.Primary}" />
+    <SolidColorBrush x:Key="Brush.Ink.Secondary" Color="{StaticResource Color.Ink.Secondary}" />
+    <SolidColorBrush x:Key="Brush.Ink.OnPrimary" Color="{StaticResource Color.Ink.OnPrimary}" />
+    <SolidColorBrush x:Key="Brush.Line.Edge" Color="{StaticResource Color.Line.Edge}" />
+    <SolidColorBrush x:Key="Brush.Dial.Guide" Color="{StaticResource Color.Dial.Guide}" />
+    <SolidColorBrush x:Key="Brush.Dial.Tick" Color="{StaticResource Color.Dial.Tick}" />
+    <SolidColorBrush x:Key="Brush.Dial.Tip" Color="{StaticResource Color.Dial.Tip}" />
+    <BoxShadows x:Key="Shadow.Float">0 18 40 0 #4D000000</BoxShadows> <!-- Under the dock and the library's player bar -->
+    <SolidColorBrush x:Key="Brush.Bg.Card" Color="{StaticResource Color.Bg.Card}" />
+
+    <!-- Fluent's slider, in the palette -->
+    <SolidColorBrush x:Key="SliderTrackFill" Color="{StaticResource Color.Bg.Track}" />
+    <SolidColorBrush x:Key="SliderTrackFillPointerOver" Color="{StaticResource Color.Bg.Track}" />
+    <SolidColorBrush x:Key="SliderTrackFillPressed" Color="{StaticResource Color.Bg.Track}" />
+    <SolidColorBrush x:Key="SliderTrackValueFill" Color="{StaticResource Color.Ink.Primary}" />
+    <SolidColorBrush x:Key="SliderTrackValueFillPointerOver" Color="{StaticResource Color.Ink.Primary}" />
+    <SolidColorBrush x:Key="SliderTrackValueFillPressed" Color="{StaticResource Color.Ink.Primary}" />
+    <SolidColorBrush x:Key="SliderThumbBackground" Color="{StaticResource Color.Ink.Primary}" />
+    <SolidColorBrush x:Key="SliderThumbBackgroundPointerOver" Color="{StaticResource Color.Ink.Primary}" />
+    <SolidColorBrush x:Key="SliderThumbBackgroundPressed" Color="{StaticResource Color.Ink.Primary}" />
+</ResourceDictionary>

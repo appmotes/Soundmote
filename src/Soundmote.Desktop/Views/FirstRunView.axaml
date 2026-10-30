@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Soundmote.App.ViewModels"
+             xmlns:c="urn:Soundmote.App.Controls"
+             x:Class="Soundmote.Desktop.Views.FirstRunView"
+             x:DataType="vm:ShellViewModel">
+    <UserControl.Styles>
+        <Style Selector="TextBlock.intent">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="ExtraBold" />
+            <Setter Property="LetterSpacing" Value="0.7" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Secondary}" />
+        </Style>
+    </UserControl.Styles>
+
+    <!-- First run (D19): the five scenes to pick from, each on its own ground. One click plays it quietly. -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="32,0,32,24" Spacing="22">
+            <StackPanel Spacing="6">
+                <TextBlock Text="Pick what you are doing." FontSize="30" FontWeight="ExtraBold" LetterSpacing="-0.3" />
+                <TextBlock Classes="meta" FontSize="13.5"
+                           Text="It starts playing at once, quietly. Every scene is a dial: each ring is a sound, and its width is how loud it is." />
+            </StackPanel>
+
+            <ItemsControl ItemsSource="{Binding Library.FromSoundmote}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="5" ColumnSpacing="16" RowSpacing="16" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:SceneCardViewModel">
+                        <c:GroundScope RequestedThemeVariant="{Binding Ground}">
+                            <Border Background="{DynamicResource Brush.Bg.Card}" CornerRadius="20" Padding="20,18"
+                                    TextElement.Foreground="{DynamicResource Brush.Ink.Primary}">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Classes="intent" Text="{Binding IntentText}" />
+                                    <c:SceneThumb Width="150" Height="150" Margin="0,10,0,12" Rings="{Binding Rings}" Position="1" />
+                                    <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="ExtraBold" />
+                                    <TextBlock Classes="meta" FontSize="12.5" Text="{Binding KindText}" />
+                                    <TextBlock Classes="meta" FontSize="12.5" Text="{Binding SoundsText}" TextWrapping="Wrap" Height="36" />
+                                    <Button Classes="primary" Height="38" Padding="20,0" Margin="0,8,0,0" HorizontalAlignment="Left"
+                                            Command="{Binding $parent[ItemsControl].((vm:ShellViewModel)DataContext).WelcomeCommand}"
+                                            CommandParameter="{Binding}">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <PathIcon Width="12" Height="12" Data="{StaticResource Icon.Play}" />
+                                            <TextBlock Text="Play" FontWeight="ExtraBold" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+                        </c:GroundScope>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Button Classes="link" Padding="0" FontSize="13.5" HorizontalAlignment="Left" Content="Or begin with an empty dial →"
+                    Command="{Binding BeginEmptyCommand}" />
+
+            <TextBlock Classes="meta" FontSize="12.5" TextWrapping="Wrap"
+                       Text="No account and nothing to sign in to. The first scene starts at 40 % volume; the dock has the rest. Three short hints show on the dial, once each." />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,18 @@
+{
+  "id": "stream-fall",
+  "name": "Waterfall pool",
+  "family": "streams",
+  "places": ["forest"],
+  "moods": ["wild"],
+  "colour": "#23748A",
+  "character": "A small waterfall pouring into a river",
+  "icon": "stream",
+  "room": 0.05,
+  "trim": 0.520,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["stream-fall"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

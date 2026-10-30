@@ -1,0 +1,18 @@
+{
+  "id": "wind-whistle",
+  "name": "Whistling wind",
+  "family": "wind",
+  "places": ["outdoors"],
+  "moods": ["mysterious"],
+  "colour": "#68798E",
+  "character": "Wind whistling through trees and grass on an open plain",
+  "icon": "wind",
+  "room": 0.05,
+  "trim": 0.517,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["wind-whistle"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

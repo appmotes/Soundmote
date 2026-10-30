@@ -1,0 +1,18 @@
+{
+  "id": "birds-woodpecker",
+  "name": "Spring woodland",
+  "family": "birds",
+  "places": ["forest"],
+  "moods": ["bright"],
+  "colour": "#6B9B4E",
+  "character": "Spring birdsong with a woodpecker drumming nearby",
+  "icon": "birds",
+  "room": 0.05,
+  "trim": 0.515,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["birds-woodpecker"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

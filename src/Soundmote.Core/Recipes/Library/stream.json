@@ -1,0 +1,18 @@
+{
+  "id": "stream",
+  "name": "Woodland stream",
+  "family": "streams",
+  "places": ["forest"],
+  "moods": ["calm"],
+  "colour": "#3A9DB0",
+  "character": "A small stream running through a wood",
+  "icon": "stream",
+  "room": 0.05,
+  "trim": 0.519,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["stream-woodland"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

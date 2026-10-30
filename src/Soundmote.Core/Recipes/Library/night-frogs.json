@@ -1,0 +1,18 @@
+{
+  "id": "night-frogs",
+  "name": "Frogs in a marsh",
+  "family": "night",
+  "places": ["outdoors"],
+  "moods": ["calm", "warm"],
+  "colour": "#5E8A66",
+  "character": "Frogs croaking in a marsh at night",
+  "icon": "crickets",
+  "room": 0.05,
+  "trim": 0.506,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["night-frogs"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

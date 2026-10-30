@@ -1,0 +1,18 @@
+{
+  "id": "sea-lake",
+  "name": "Lake shore",
+  "family": "sea",
+  "places": ["shore", "forest"],
+  "moods": ["calm"],
+  "colour": "#4E9FB0",
+  "character": "Small waves on the shore of a quiet lake",
+  "icon": "sea",
+  "room": 0.05,
+  "trim": 0.530,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["sea-lake"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

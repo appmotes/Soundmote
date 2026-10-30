@@ -1,0 +1,18 @@
+{
+  "id": "birds-morning",
+  "name": "Morning birds",
+  "family": "birds",
+  "places": ["forest"],
+  "moods": ["bright"],
+  "colour": "#76AE5C",
+  "character": "Birds singing in a forest on a fresh morning",
+  "icon": "birds",
+  "room": 0.05,
+  "trim": 0.506,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["birds-morning"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

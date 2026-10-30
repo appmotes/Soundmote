@@ -1,0 +1,18 @@
+{
+  "id": "birds-dawn",
+  "name": "Dawn chorus",
+  "family": "birds",
+  "places": ["forest"],
+  "moods": ["bright", "calm"],
+  "colour": "#5FA05E",
+  "character": "Birds waking at first light by a lake in a pine forest",
+  "icon": "birds",
+  "room": 0.05,
+  "trim": 0.53,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["birds-dawn"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

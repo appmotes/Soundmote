@@ -1,0 +1,18 @@
+{
+  "id": "sea-far",
+  "name": "Distant surf",
+  "family": "sea",
+  "places": ["shore"],
+  "moods": ["calm", "mysterious"],
+  "colour": "#4C8C96",
+  "character": "Surf crashing far off along the coast",
+  "icon": "sea",
+  "room": 0.05,
+  "trim": 0.518,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["sea-far"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "thunder-mountain",
+  "name": "Mountain thunder",
+  "family": "thunder",
+  "places": ["outdoors"],
+  "moods": ["mysterious", "wild"],
+  "colour": "#5F6B84",
+  "character": "Thunder in a valley below, echoing off the mountains",
+  "icon": "thunder",
+  "room": 0.25,
+  "trim": 1.155,
+  "glide": 0.05,
+  "strikes": "random",
+  "parts": [
+    { "type": "sample", "loop": false,
+      "files": ["thunder-mountain-a-1", "thunder-mountain-a-2", "thunder-mountain-a-4", "thunder-mountain-b-1", "thunder-mountain-c-1"],
+      "pitch": [0.95, 1.03], "level": [0.6, 1], "spread": 0.5, "gain": "amount" }
+  ]
+}

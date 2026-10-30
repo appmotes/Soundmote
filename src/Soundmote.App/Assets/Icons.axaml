@@ -1,0 +1,16 @@
+<!-- Filled icon geometries on a 24 × 24 grid, drawn with PathIcon. -->
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StreamGeometry x:Key="Icon.Play">M8 4.8 L19.5 12 L8 19.2 Z</StreamGeometry>
+    <StreamGeometry x:Key="Icon.Pause">M6 4 H10 V20 H6 Z M14 4 H18 V20 H14 Z</StreamGeometry>
+    <StreamGeometry x:Key="Icon.Speaker">M3 9 H7 L12 4.5 V19.5 L7 15 H3 Z M15 8.2 A5 5 0 0 1 15 15.8 L14 14.4 A3.4 3.4 0 0 0 14 9.6 Z</StreamGeometry>
+    <StreamGeometry x:Key="Icon.SpeakerOff">M3 9 H7 L12 4.5 V19.5 L7 15 H3 Z M15 9.4 L16.1 8.3 L18.5 10.7 L20.9 8.3 L22 9.4 L19.6 11.8 L22 14.2 L20.9 15.3 L18.5 12.9 L16.1 15.3 L15 14.2 L17.4 11.8 Z</StreamGeometry>
+    <StreamGeometry x:Key="Icon.Plus">M11 5 H13 V11 H19 V13 H13 V19 H11 V13 H5 V11 H11 Z</StreamGeometry>
+    <StreamGeometry x:Key="Icon.Close">M6.4 5 L12 10.6 L17.6 5 L19 6.4 L13.4 12 L19 17.6 L17.6 19 L12 13.4 L6.4 19 L5 17.6 L10.6 12 L5 6.4 Z</StreamGeometry>
+    <StreamGeometry x:Key="Icon.More">M3.5 12 A2 2 0 1 0 7.5 12 A2 2 0 1 0 3.5 12 Z M10 12 A2 2 0 1 0 14 12 A2 2 0 1 0 10 12 Z M16.5 12 A2 2 0 1 0 20.5 12 A2 2 0 1 0 16.5 12 Z</StreamGeometry>
+    <!-- Stroked, for a Glyph: two sliders. -->
+    <StreamGeometry x:Key="Icon.Settings">M4 7 H13 M17 7 H20 M15 4.5 V9.5 M4 17 H7 M11 17 H20 M9 14.5 V19.5</StreamGeometry>
+    <StreamGeometry x:Key="Icon.Down">M5 8 H19 L12 16 Z</StreamGeometry>
+    <StreamGeometry x:Key="Icon.Back">M14.6 5 L16 6.4 L10.4 12 L16 17.6 L14.6 19 L7.6 12 Z</StreamGeometry>
+    <StreamGeometry x:Key="Icon.Search">F1 M10 3 A7 7 0 1 0 14.2 15.6 L19.3 20.7 L20.7 19.3 L15.6 14.2 A7 7 0 0 0 10 3 Z M10 5 A5 5 0 1 1 10 15 A5 5 0 0 1 10 5 Z</StreamGeometry>
+</ResourceDictionary>

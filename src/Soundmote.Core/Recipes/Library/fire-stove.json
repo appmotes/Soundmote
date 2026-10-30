@@ -1,0 +1,18 @@
+{
+  "id": "fire-stove",
+  "name": "Wood stove",
+  "family": "fire",
+  "places": ["indoors"],
+  "moods": ["cosy", "warm"],
+  "colour": "#C4683A",
+  "character": "Wood burning in a stove, its door a little open",
+  "icon": "fire",
+  "room": 0.05,
+  "trim": 0.644,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["fire-stove"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

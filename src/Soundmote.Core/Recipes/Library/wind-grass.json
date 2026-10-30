@@ -1,0 +1,18 @@
+{
+  "id": "wind-grass",
+  "name": "Wind in grass",
+  "family": "wind",
+  "places": ["outdoors"],
+  "moods": ["calm", "mysterious"],
+  "colour": "#8A9AAB",
+  "character": "Wind moving through the grass of a wide plain",
+  "icon": "wind",
+  "room": 0.05,
+  "trim": 0.535,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["wind-grass"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

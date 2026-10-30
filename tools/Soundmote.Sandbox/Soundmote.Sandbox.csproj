@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Soundmote.Core\Soundmote.Core.csproj" />
+    <ProjectReference Include="..\..\src\Soundmote.Audio\Soundmote.Audio.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="OggVorbisEncoder" />
+  </ItemGroup>
+</Project>

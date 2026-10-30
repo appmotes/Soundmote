@@ -1,0 +1,18 @@
+{
+  "id": "sea-pebbles",
+  "name": "Pebble beach",
+  "family": "sea",
+  "places": ["shore"],
+  "moods": ["wild"],
+  "colour": "#2C8277",
+  "character": "Big waves dragging the pebbles back down the beach",
+  "icon": "sea",
+  "room": 0.05,
+  "trim": 0.540,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["sea-pebbles"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

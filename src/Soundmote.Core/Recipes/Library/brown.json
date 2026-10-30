@@ -1,0 +1,18 @@
+{
+  "id": "brown",
+  "name": "Airplane cabin",
+  "family": "noise",
+  "places": ["indoors"],
+  "moods": ["calm"],
+  "colour": "#8A7867",
+  "character": "The deep, even roar inside an airliner at cruise",
+  "icon": "noise",
+  "room": 0.05,
+  "trim": 0.367,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["noise-plane"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

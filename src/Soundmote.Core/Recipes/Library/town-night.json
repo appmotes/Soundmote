@@ -1,0 +1,18 @@
+{
+  "id": "town-night",
+  "name": "City at night",
+  "family": "town",
+  "places": ["town"],
+  "moods": ["mysterious"],
+  "colour": "#5A6B8F",
+  "character": "A big city boulevard at night, traffic washing past",
+  "icon": "cafe",
+  "room": 0.05,
+  "trim": 0.521,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["town-night"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

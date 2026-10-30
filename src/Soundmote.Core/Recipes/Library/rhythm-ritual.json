@@ -1,0 +1,23 @@
+{
+  "id": "rhythm-ritual",
+  "name": "Great drums",
+  "family": "rhythm",
+  "moods": ["wild", "mysterious"],
+  "colour": "#9A4458",
+  "character": "Great drums in a large hall, slow",
+  "room": 0.4,
+  "trim": 0.41,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "loop": false, "files": ["hit-drum-low"],
+      "pattern": {"every": 8, "at": [0, 3, 4], "levels": [1, 0.6, 0.85]},
+      "pitch": [0.98, 1.02], "level": [0.85, 1], "spread": 0.2,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" },
+    { "type": "sample", "loop": false, "files": ["hit-drum-mid"],
+      "pattern": {"every": 8, "at": [6, 6.5], "levels": [0.6, 0.7]},
+      "pitch": [0.98, 1.02], "level": [0.85, 1], "spread": 0.4,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

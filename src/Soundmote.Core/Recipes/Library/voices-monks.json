@@ -1,0 +1,18 @@
+{
+  "id": "voices-monks",
+  "name": "Morning prayer",
+  "family": "voices",
+  "places": ["temple"],
+  "moods": ["calm", "mysterious"],
+  "colour": "#8A4A6C",
+  "character": "Monks at their morning meditation, chanting low",
+  "icon": "monks",
+  "room": 0.05,
+  "trim": 0.465,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["voices-monks"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "night-woods",
+  "name": "Night woods",
+  "family": "night",
+  "places": ["forest"],
+  "moods": ["calm", "mysterious"],
+  "colour": "#6B5FA3",
+  "character": "Crickets and katydids deep in the woods at night",
+  "icon": "crickets",
+  "room": 0.05,
+  "trim": 0.535,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["night-woods"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

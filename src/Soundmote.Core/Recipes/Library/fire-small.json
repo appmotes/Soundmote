@@ -1,0 +1,18 @@
+{
+  "id": "fire-small",
+  "name": "Small flame",
+  "family": "fire",
+  "places": ["indoors"],
+  "moods": ["cosy", "calm"],
+  "colour": "#D99A5A",
+  "character": "A little flame on a few logs, crackling now and then",
+  "icon": "fire",
+  "room": 0.05,
+  "trim": 0.702,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["fire-small"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

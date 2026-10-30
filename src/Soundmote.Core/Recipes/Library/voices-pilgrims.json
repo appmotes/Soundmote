@@ -1,0 +1,18 @@
+{
+  "id": "voices-pilgrims",
+  "name": "Pilgrims' prayers",
+  "family": "voices",
+  "places": ["temple", "outdoors"],
+  "moods": ["mysterious"],
+  "colour": "#9A6A88",
+  "character": "Many voices reciting prayers outside a temple",
+  "icon": "monks",
+  "room": 0.05,
+  "trim": 0.524,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["voices-pilgrims"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "thunder-close",
+  "name": "Thunder crack",
+  "family": "thunder",
+  "places": ["outdoors"],
+  "moods": ["wild"],
+  "colour": "#47506A",
+  "character": "Lightning close by: a sharp crack, then the rumble",
+  "icon": "thunder",
+  "room": 0.05,
+  "trim": 1.019,
+  "glide": 0.05,
+  "strikes": "random",
+  "parts": [
+    { "type": "sample", "loop": false,
+      "files": ["thunder-close-a-1", "thunder-close-b-1", "thunder-close-c-1", "thunder-close-d-1", "thunder-close-e-1", "thunder-close-f-1", "thunder-close-g-1"],
+      "pitch": [0.97, 1.02], "level": [0.8, 1], "spread": 0.3, "gain": "amount" }
+  ]
+}

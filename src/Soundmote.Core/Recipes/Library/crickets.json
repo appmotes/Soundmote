@@ -1,0 +1,18 @@
+{
+  "id": "crickets",
+  "name": "Night crickets",
+  "family": "night",
+  "places": ["outdoors"],
+  "moods": ["calm"],
+  "colour": "#7C6FB3",
+  "character": "Crickets chirping in the dark",
+  "icon": "crickets",
+  "room": 0.05,
+  "trim": 0.481,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["night-crickets"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

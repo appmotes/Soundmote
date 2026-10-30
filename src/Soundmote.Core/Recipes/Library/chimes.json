@@ -1,0 +1,19 @@
+{
+  "id": "chimes",
+  "name": "Meditation bells",
+  "family": "bells",
+  "places": ["temple", "indoors"],
+  "moods": ["calm", "bright"],
+  "colour": "#D4BC70",
+  "character": "Small meditation bells, chiming now and then",
+  "icon": "chimes",
+  "room": 0.15,
+  "trim": 1.161,
+  "glide": 0.05,
+  "strikes": "random",
+  "parts": [
+    { "type": "sample", "loop": false,
+      "files": ["chimes-a-1", "chimes-b-1"],
+      "pitch": [0.998, 1.002], "level": [0.7, 1], "spread": 0.5, "gain": "amount" }
+  ]
+}

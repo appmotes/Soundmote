@@ -1,0 +1,18 @@
+{
+  "id": "birds-pond",
+  "name": "Birds by a pond",
+  "family": "birds",
+  "places": ["forest", "outdoors"],
+  "moods": ["calm", "bright"],
+  "colour": "#4F9150",
+  "character": "A dawn chorus at a pond near the forest's edge",
+  "icon": "birds",
+  "room": 0.05,
+  "trim": 0.551,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["birds-pond"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

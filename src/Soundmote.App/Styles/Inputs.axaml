@@ -1,0 +1,60 @@
+<!-- Text fields (D9): a quiet wash, no edge, a thin ring while focused. -->
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="TextBox.search">
+        <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="MinHeight" Value="38" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="13" />
+        <Style Selector="^:pointerover /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+        <Style Selector="^:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Line.Edge}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+    </Style>
+
+    <!-- A name being typed: on the New scene sheet and in place on a card. An ink edge says it is being edited. -->
+    <Style Selector="TextBox.name">
+        <Setter Property="Background" Value="{DynamicResource Brush.Bg.Card}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Style Selector="^:pointerover /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Card}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Card}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="BorderThickness" Value="2" />
+        </Style>
+    </Style>
+
+    <!-- A switch that is on takes the ground's ink, like a checked chip, not the system accent (D18). -->
+    <Style Selector="ToggleSwitch:checked /template/ Border#SwitchKnobBounds">
+        <Setter Property="Background" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Ink.Primary}" />
+    </Style>
+    <Style Selector="ToggleSwitch:checked:pointerover /template/ Border#SwitchKnobBounds">
+        <Setter Property="Background" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Ink.Primary}" />
+    </Style>
+    <Style Selector="ToggleSwitch:checked /template/ Ellipse#SwitchKnobOn">
+        <Setter Property="Fill" Value="{DynamicResource Brush.Bg.Panel}" />
+    </Style>
+</Styles>

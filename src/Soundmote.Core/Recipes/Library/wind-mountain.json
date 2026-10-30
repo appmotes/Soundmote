@@ -1,0 +1,18 @@
+{
+  "id": "wind-mountain",
+  "name": "Mountain wind",
+  "family": "wind",
+  "places": ["outdoors"],
+  "moods": ["wild"],
+  "colour": "#6F8296",
+  "character": "Heavy gusts high in the mountains",
+  "icon": "wind",
+  "room": 0.05,
+  "trim": 0.495,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["wind-mountain"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

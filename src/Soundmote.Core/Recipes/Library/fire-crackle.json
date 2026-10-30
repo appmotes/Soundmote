@@ -1,0 +1,18 @@
+{
+  "id": "fire-crackle",
+  "name": "Crackling hearth",
+  "family": "fire",
+  "places": ["indoors"],
+  "moods": ["cosy", "calm"],
+  "colour": "#B85A30",
+  "character": "A slow fire with sparse, sharp crackles",
+  "icon": "fire",
+  "room": 0.05,
+  "trim": 0.901,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["fire-crackle"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "thunder-roll",
+  "name": "Rolling thunder",
+  "family": "thunder",
+  "places": ["outdoors"],
+  "moods": ["wild", "mysterious"],
+  "colour": "#5A6478",
+  "character": "A strike at a distance and its long roll",
+  "icon": "thunder",
+  "room": 0.12,
+  "trim": 1.064,
+  "glide": 0.05,
+  "strikes": "random",
+  "parts": [
+    { "type": "sample", "loop": false,
+      "files": ["thunder-roll-a-1", "thunder-roll-b-1", "thunder-roll-c-1"],
+      "pitch": [0.95, 1.03], "level": [0.7, 1], "spread": 0.4, "gain": "amount" }
+  ]
+}

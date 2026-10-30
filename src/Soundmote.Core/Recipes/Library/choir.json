@@ -1,0 +1,18 @@
+{
+  "id": "choir",
+  "name": "Gregorian chant",
+  "family": "voices",
+  "places": ["temple", "indoors"],
+  "moods": ["mysterious", "calm"],
+  "colour": "#C08AA8",
+  "character": "Monks singing plainchant in a great basilica, an organ holding under them",
+  "icon": "monks",
+  "room": 0.05,
+  "trim": 0.374,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["voices-gregorian"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

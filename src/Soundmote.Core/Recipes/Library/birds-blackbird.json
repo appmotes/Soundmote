@@ -1,0 +1,18 @@
+{
+  "id": "birds-blackbird",
+  "name": "Blackbird",
+  "family": "birds",
+  "places": ["outdoors"],
+  "moods": ["calm", "mysterious"],
+  "colour": "#3E7A44",
+  "character": "A blackbird singing from the top of a fir on a warm summer evening",
+  "icon": "birds",
+  "room": 0.05,
+  "trim": 0.646,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["birds-blackbird"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "rain",
+  "name": "Soft rain",
+  "family": "rain",
+  "places": ["outdoors"],
+  "moods": ["calm"],
+  "colour": "#9DBBD6",
+  "character": "Fine, even rain over open countryside",
+  "icon": "rain",
+  "room": 0.05,
+  "trim": 0.556,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["rain-soft"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

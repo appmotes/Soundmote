@@ -1,0 +1,18 @@
+{
+  "id": "noise-fan-ceiling",
+  "name": "Ceiling fan",
+  "family": "noise",
+  "places": ["indoors"],
+  "moods": ["calm", "warm"],
+  "colour": "#968272",
+  "character": "A ceiling fan on high, a soft even whoosh",
+  "icon": "noise",
+  "room": 0.05,
+  "trim": 0.444,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["noise-fan-ceiling"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

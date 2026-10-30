@@ -1,0 +1,18 @@
+{
+  "id": "bowl-sung",
+  "name": "Sung bowl",
+  "family": "bells",
+  "places": ["temple"],
+  "moods": ["calm", "mysterious"],
+  "colour": "#C99A4B",
+  "character": "A bowl sung round its rim, swelling and holding",
+  "icon": "bowl",
+  "room": 0.2,
+  "trim": 0.633,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["bowl-sung-a"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

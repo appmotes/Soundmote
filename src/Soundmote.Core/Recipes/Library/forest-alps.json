@@ -1,0 +1,18 @@
+{
+  "id": "forest-alps",
+  "name": "Mountain morning",
+  "family": "forest",
+  "places": ["forest", "outdoors"],
+  "moods": ["bright", "calm"],
+  "colour": "#7AA670",
+  "character": "Early morning in the mountains, before sunrise: wind and slow birds",
+  "icon": "forest",
+  "room": 0.05,
+  "trim": 0.598,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["forest-alps"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "rhythm-pulse",
+  "name": "Soft pulse",
+  "family": "rhythm",
+  "moods": ["calm", "warm"],
+  "colour": "#B85070",
+  "character": "A deep, soft beat to breathe with, more felt than heard",
+  "room": 0.2,
+  "trim": 0.349,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "loop": false, "files": ["hit-pulse"],
+      "pattern": {"every": 2, "at": [0, 1], "levels": [1, 0.55]},
+      "pitch": [0.98, 1.02], "level": [0.85, 1], "spread": 0.2,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

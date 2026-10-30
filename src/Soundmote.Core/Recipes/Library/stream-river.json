@@ -1,0 +1,18 @@
+{
+  "id": "stream-river",
+  "name": "River over rocks",
+  "family": "streams",
+  "places": ["forest", "outdoors"],
+  "moods": ["calm"],
+  "colour": "#2F8CA0",
+  "character": "A forest river flowing over rocks",
+  "icon": "stream",
+  "room": 0.05,
+  "trim": 0.521,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["stream-river"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

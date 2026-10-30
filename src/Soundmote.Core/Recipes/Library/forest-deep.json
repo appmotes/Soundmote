@@ -1,0 +1,18 @@
+{
+  "id": "forest-deep",
+  "name": "Deep forest",
+  "family": "forest",
+  "places": ["forest"],
+  "moods": ["calm", "mysterious"],
+  "colour": "#3E6A44",
+  "character": "Deep in the forest before dawn: insects singing, the first birds",
+  "icon": "forest",
+  "room": 0.05,
+  "trim": 0.514,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["forest-deep"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

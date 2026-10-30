@@ -1,0 +1,187 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Soundmote.App.ViewModels"
+             xmlns:c="urn:Soundmote.App.Controls"
+             x:Class="Soundmote.Desktop.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+    <UserControl.Styles>
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="ExtraBold" />
+            <Setter Property="LetterSpacing" Value="0.7" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Secondary}" />
+            <Setter Property="Margin" Value="0,6,0,2" />
+        </Style>
+        <Style Selector="Grid.setting">
+            <Setter Property="MinHeight" Value="44" />
+        </Style>
+        <Style Selector="ToggleSwitch">
+            <Setter Property="OnContent" Value="" />
+            <Setter Property="OffContent" Value="" />
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="ItemsControl.chips">
+            <Setter Property="ItemsPanel">
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="2" />
+                </ItemsPanelTemplate>
+            </Setter>
+        </Style>
+    </UserControl.Styles>
+
+    <!-- Settings (D18): a sheet on the ground of the scene behind it. Every change is kept at once. -->
+    <Border Width="960" CornerRadius="24" Padding="32,28" Background="{DynamicResource Brush.Bg.Panel}"
+            BoxShadow="0 30 80 0 #59141822" TextElement.Foreground="{DynamicResource Brush.Ink.Primary}">
+        <StackPanel Spacing="18">
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="24">
+                <StackPanel Spacing="3">
+                    <TextBlock Text="Settings" FontSize="24" FontWeight="ExtraBold" />
+                    <TextBlock Classes="meta" FontSize="13" Text="Changes apply at once." />
+                </StackPanel>
+                <!-- About (D18): what the app menu's "About Soundmote" opens -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12" VerticalAlignment="Top">
+                    <Image Source="/Assets/icon.png" Width="40" Height="40" />
+                    <StackPanel Spacing="2" VerticalAlignment="Center">
+                        <TextBlock Classes="row" Text="{Binding AboutTitle}" />
+                        <TextBlock Classes="meta" FontSize="12" Text="Written by Claude Opus 5.5 (Anthropic) from a human's description" />
+                    </StackPanel>
+                </StackPanel>
+                <Button Grid.Column="2" Classes="secondary" Height="38" Padding="18,0" Content="Done" VerticalAlignment="Top"
+                        Command="{Binding CloseCommand}" ToolTip.Tip="Close (Escape)" />
+            </Grid>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="40">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="label" Text="SOUND" />
+                    <Grid Classes="setting" ColumnDefinitions="*,Auto">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Classes="row" Text="Fade out when stopping" />
+                            <TextBlock Classes="meta" Text="When Stop after ends a scene" />
+                        </StackPanel>
+                        <Border Grid.Column="1" Padding="3" CornerRadius="{StaticResource Radius.Segment}" Background="{DynamicResource Brush.Bg.Hover}"
+                                VerticalAlignment="Center">
+                            <ItemsControl Classes="chips" ItemsSource="{Binding Fades}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:ChoiceViewModel">
+                                        <ToggleButton Classes="segment" Height="28" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                                      Command="{Binding $parent[UserControl].((vm:SettingsViewModel)DataContext).ChooseFadeCommand}"
+                                                      CommandParameter="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
+                    </Grid>
+                    <Grid Classes="setting" ColumnDefinitions="*,Auto" IsEnabled="{Binding CanKeepPlaying}">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Classes="row" Text="Keep playing when the window closes" />
+                            <TextBlock Classes="meta" Text="The menu bar player stays" />
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1" IsChecked="{Binding KeepPlaying}" />
+                    </Grid>
+
+                    <TextBlock Classes="label" Text="STARTING" />
+                    <Grid Classes="setting" ColumnDefinitions="*,Auto" IsEnabled="{Binding SupportsMenuBar}">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Classes="row" Text="Show in the menu bar" />
+                            <TextBlock Classes="meta" Text="Play, switch and stop without the window" />
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1" IsChecked="{Binding ShowMenuBar}" />
+                    </Grid>
+                    <Grid Classes="setting" ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="row" Text="When Soundmote opens" VerticalAlignment="Center" />
+                        <Border Grid.Column="1" Padding="3" CornerRadius="{StaticResource Radius.Segment}" Background="{DynamicResource Brush.Bg.Hover}"
+                                VerticalAlignment="Center">
+                            <ItemsControl Classes="chips" ItemsSource="{Binding Starts}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:ChoiceViewModel">
+                                        <ToggleButton Classes="segment" Height="28" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                                      Command="{Binding $parent[UserControl].((vm:SettingsViewModel)DataContext).ChooseStartCommand}"
+                                                      CommandParameter="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Spacing="2">
+                    <TextBlock Classes="label" Text="LOOK" />
+                    <TextBlock Classes="row" Text="Ground for new scenes" Margin="0,8,0,8" />
+                    <ItemsControl ItemsSource="{Binding Grounds}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel ItemSpacing="6" LineSpacing="6" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ChoiceViewModel">
+                                <ToggleButton Classes="option" Padding="5,5,10,5" IsChecked="{Binding IsChecked}"
+                                              Command="{Binding $parent[UserControl].((vm:SettingsViewModel)DataContext).ChooseGroundCommand}"
+                                              CommandParameter="{Binding}">
+                                    <StackPanel Orientation="Horizontal" Spacing="7">
+                                        <Border Width="22" Height="22" CornerRadius="7" IsVisible="{Binding Ground, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                            <c:GroundScope RequestedThemeVariant="{Binding Ground}">
+                                                <Border CornerRadius="7" Background="{DynamicResource Brush.Bg.Ground}"
+                                                        BorderBrush="{DynamicResource Brush.Line.Edge}" BorderThickness="1">
+                                                    <Ellipse Width="7" Height="7" Fill="{DynamicResource Brush.Dial.Tip}" />
+                                                </Border>
+                                            </c:GroundScope>
+                                        </Border>
+                                        <TextBlock Text="{Binding Label}" FontSize="12.5" FontWeight="Bold" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ToggleButton>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Grid Classes="setting" ColumnDefinitions="*,Auto" Margin="0,6,0,0">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Classes="row" Text="Dim the dial at night" />
+                            <TextBlock Classes="meta" Text="After 15 s untouched, between 22:00 and 07:00 or for sleep" />
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1" IsChecked="{Binding DimAtNight}" />
+                    </Grid>
+
+                    <TextBlock Classes="label" Text="SCENES" />
+                    <Grid Classes="setting" ColumnDefinitions="*,Auto">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Classes="row" Text="{Binding FolderText}" />
+                            <TextBlock Classes="meta" Text="One file per scene" />
+                        </StackPanel>
+                        <Button Grid.Column="1" Classes="secondary" Height="32" Padding="14,0" Content="{Binding RevealText}"
+                                VerticalAlignment="Center" Command="{Binding RevealFolderCommand}" />
+                    </Grid>
+                    <Grid Classes="setting" ColumnDefinitions="*,Auto">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Classes="row" Text="Soundmote's own scenes" />
+                            <TextBlock Classes="meta" Text="Undoes every change made to them" />
+                        </StackPanel>
+                        <Button Grid.Column="1" Classes="secondary" Height="32" Padding="14,0" Content="{Binding ResetText}"
+                                VerticalAlignment="Center" Command="{Binding ResetAllCommand}" IsEnabled="{Binding CanReset}" />
+                    </Grid>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Spacing="8">
+                <TextBlock Classes="label" Text="KEYS" />
+                <ItemsControl ItemsSource="{Binding Keys}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="4" RowSpacing="6" ColumnSpacing="12" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:KeyItem">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Border MinWidth="44" Padding="7,3" CornerRadius="7" Background="{DynamicResource Brush.Bg.Hover}">
+                                    <TextBlock Text="{Binding Key}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" />
+                                </Border>
+                                <TextBlock Classes="meta" FontSize="12.5" Text="{Binding Text}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -1,0 +1,18 @@
+{
+  "id": "rhythm-bass",
+  "name": "Bass pulse",
+  "family": "rhythm",
+  "moods": ["warm", "calm"],
+  "colour": "#9A4E66",
+  "character": "A warm bass note on D or A, the pulse under a pad",
+  "room": 0.15,
+  "trim": 0.26,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "loop": false, "files": ["hit-bass-38", "hit-bass-45"],
+      "pattern": {"every": 4, "at": [0, 2], "levels": [1, 0.75]},
+      "pitch": [1, 1], "level": [0.85, 1], "spread": 0,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

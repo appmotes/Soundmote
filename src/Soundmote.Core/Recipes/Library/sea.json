@@ -1,0 +1,18 @@
+{
+  "id": "sea",
+  "name": "Calm sea",
+  "family": "sea",
+  "places": ["shore"],
+  "moods": ["calm"],
+  "colour": "#5DB3A8",
+  "character": "Calm waves breaking, the foam fizzing as it drains",
+  "icon": "sea",
+  "room": 0.05,
+  "trim": 0.537,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["sea-calm"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

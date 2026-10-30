@@ -1,0 +1,18 @@
+{
+  "id": "pad-tide",
+  "name": "Harmony tide",
+  "family": "pads",
+  "moods": ["calm", "mysterious"],
+  "colour": "#7563B8",
+  "character": "Notes of one key that come and go on slow waves, so the chord keeps changing",
+  "room": 0.1,
+  "trim": 0.290,
+  "glide": 0.3,
+  "signals": [ { "name": "slow", "walk": 9 }, { "name": "flutter", "walk": 0.8 } ],
+  "parts": [
+    { "type": "sample", "files": ["pad-tide"], "fade": 4, "change": 40,
+      "tune": "pow(2, waver * (40 * slow + 10 * flutter) / 1200)",
+      "filters": [ { "type": "lowpass", "freq": "800 + 17200 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

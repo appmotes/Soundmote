@@ -1,0 +1,25 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Soundmote.Core/Soundmote.Core.csproj" />
+    <Project Path="src/Soundmote.Audio/Soundmote.Audio.csproj" />
+    <Project Path="src/Soundmote.App/Soundmote.App.csproj" />
+    <Project Path="src/Soundmote.Desktop/Soundmote.Desktop.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/Soundmote.Sandbox/Soundmote.Sandbox.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Soundmote.Core.Tests/Soundmote.Core.Tests.csproj" />
+    <Project Path="tests/Soundmote.App.Tests/Soundmote.App.Tests.csproj" />
+    <Project Path="tests/Soundmote.Desktop.Tests/Soundmote.Desktop.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Docs/">
+    <File Path="CLAUDE.md" />
+    <File Path="Docs/architecture.md" />
+    <File Path="Docs/design-language.md" />
+    <File Path="Docs/sound-design.md" />
+    <File Path="Docs/pitfalls.md" />
+    <File Path="Docs/todo.md" />
+    <File Path="Docs/dependencies.md" />
+  </Folder>
+</Solution>

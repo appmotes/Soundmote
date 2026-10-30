@@ -1,0 +1,171 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Soundmote.App.ViewModels"
+             xmlns:c="urn:Soundmote.App.Controls"
+             x:Class="Soundmote.Desktop.Views.LibraryView"
+             x:DataType="vm:ShellViewModel">
+    <UserControl.Styles>
+        <Style Selector="TextBlock.heading">
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="FontWeight" Value="ExtraBold" />
+            <Setter Property="LetterSpacing" Value="-0.3" />
+        </Style>
+        <Style Selector="TextBlock.intent">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="ExtraBold" />
+            <Setter Property="LetterSpacing" Value="0.7" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Secondary}" />
+        </Style>
+        <Style Selector="ItemsControl.cards">
+            <Setter Property="ItemsPanel">
+                <ItemsPanelTemplate>
+                    <WrapPanel ItemSpacing="16" LineSpacing="16" />
+                </ItemsPanelTemplate>
+            </Setter>
+        </Style>
+    </UserControl.Styles>
+
+    <UserControl.DataTemplates>
+        <!-- A scene (D13). The menu, the … button and the name field sit over the card button, not inside it, so their
+             clicks and keys never open the scene. -->
+        <DataTemplate DataType="vm:SceneCardViewModel">
+            <Panel Width="292" Height="256">
+                <Panel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Open" Click="OnOpen" />
+                        <MenuItem Header="Rename" Click="OnRename" />
+                        <MenuItem Header="Duplicate" Click="OnDuplicate" />
+                        <MenuItem Header="Ground">
+                            <MenuItem Header="Night" Tag="Night" Click="OnGround" />
+                            <MenuItem Header="Ember" Tag="Ember" Click="OnGround" />
+                            <MenuItem Header="Paper" Tag="Paper" Click="OnGround" />
+                            <MenuItem Header="Sky" Tag="Sky" Click="OnGround" />
+                        </MenuItem>
+                        <MenuItem Header="{x:Static vm:ShellViewModel.RevealText}" Click="OnReveal" />
+                        <Separator IsVisible="{Binding CanDelete}" />
+                        <MenuItem Header="Delete" Click="OnDelete" IsVisible="{Binding CanDelete}" />
+                        <Separator IsVisible="{Binding CanReset}" />
+                        <MenuItem Header="Reset to original" Click="OnReset" IsVisible="{Binding CanReset}" />
+                    </ContextMenu>
+                </Panel.ContextMenu>
+
+                <Button Classes="card" Classes.playing="{Binding IsPlaying}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Command="{Binding $parent[ItemsControl].((vm:ShellViewModel)DataContext).OpenCommand}"
+                        CommandParameter="{Binding}" ToolTip.Tip="Open and play">
+                    <!-- The card takes its scene's ground, so its own text and rings use that ground's ink. -->
+                    <c:GroundScope RequestedThemeVariant="{Binding Ground}">
+                        <Border Background="{DynamicResource Brush.Bg.Card}" CornerRadius="18" Padding="16,14,16,16"
+                                TextElement.Foreground="{DynamicResource Brush.Ink.Primary}">
+                            <Grid RowDefinitions="Auto,*,Auto,Auto">
+                                <Grid ColumnDefinitions="*,Auto" Height="20">
+                                    <TextBlock Classes="intent" Text="{Binding IntentText}" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="5" IsVisible="{Binding IsPlaying}">
+                                        <Ellipse Width="7" Height="7" Fill="#4F9150" VerticalAlignment="Center" />
+                                        <TextBlock Classes="intent" Text="PLAYING" Foreground="{DynamicResource Brush.Ink.Primary}"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <Border Grid.Column="1" Padding="8,2" CornerRadius="9" Background="{DynamicResource Brush.Bg.Track}"
+                                            IsVisible="{Binding ShowPill}">
+                                        <TextBlock Text="{Binding Pill}" FontSize="10.5" FontWeight="ExtraBold" />
+                                    </Border>
+                                </Grid>
+                                <c:SceneThumb Grid.Row="1" Width="132" Height="132" Margin="0,6,0,8"
+                                              Rings="{Binding Rings}" Position="{Binding Position}" ShowHand="{Binding IsPlaying}" />
+                                <TextBlock Grid.Row="2" Text="{Binding Name}" FontSize="17" FontWeight="ExtraBold"
+                                           TextTrimming="CharacterEllipsis" Margin="0,0,28,0" />
+                                <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="6" Margin="0,3,0,0">
+                                    <c:Glyph Width="14" Height="14" Data="{Binding KindIcon}" Stroke="2.4"
+                                             Foreground="{DynamicResource Brush.Ink.Secondary}" VerticalAlignment="Center" />
+                                    <TextBlock Classes="meta" FontSize="12.5" Text="{Binding KindText}" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </c:GroundScope>
+                </Button>
+
+                <c:GroundScope RequestedThemeVariant="{Binding Ground}">
+                    <Panel>
+                        <TextBox Classes="name" Text="{Binding EditName}" IsVisible="{Binding IsRenaming}"
+                                 VerticalAlignment="Bottom" Margin="8,0,8,36" Height="34" FontSize="17"
+                                 KeyDown="OnRenameKey" LostFocus="OnRenameLeft" PropertyChanged="OnRenameShown" />
+                        <Button Classes="glyph" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                Margin="0,0,12,12" Click="OnMore" ToolTip.Tip="Rename, duplicate, ground…">
+                            <PathIcon Width="16" Height="16" Data="{StaticResource Icon.More}" />
+                        </Button>
+                    </Panel>
+                </c:GroundScope>
+            </Panel>
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:NewSceneTile">
+            <Button Classes="card" Width="292" Height="256"
+                    Command="{Binding $parent[ItemsControl].((vm:ShellViewModel)DataContext).StartNewSceneCommand}"
+                    ToolTip.Tip="New scene (⌘N)">
+                <Panel>
+                    <Rectangle RadiusX="18" RadiusY="18" StrokeThickness="1.5" StrokeDashArray="4,3"
+                               Stroke="{DynamicResource Brush.Bg.Track}" />
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
+                        <PathIcon Width="20" Height="20" Data="{StaticResource Icon.Plus}" Foreground="{DynamicResource Brush.Ink.Secondary}" />
+                        <TextBlock Text="New scene" FontSize="13.5" FontWeight="Bold" Foreground="{DynamicResource Brush.Ink.Secondary}" />
+                    </StackPanel>
+                </Panel>
+            </Button>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+
+    <!-- The library (D13): the user's own scenes, then Soundmote's; the open scene's player along the bottom. -->
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="32,0,32,0">
+        <StackPanel Spacing="4">
+            <TextBlock Classes="heading" Text="What are you doing?" />
+            <TextBlock Classes="meta" FontSize="13.5"
+                       Text="Right-click a scene, or press its … button, for everything you can do with it." />
+        </StackPanel>
+
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Library.Chips}" Margin="0,22,0,18">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="8" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:IntentChipViewModel">
+                    <ToggleButton Classes="chip filter" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                  Command="{Binding $parent[ItemsControl].((vm:ShellViewModel)DataContext).Library.FilterCommand}"
+                                  CommandParameter="{Binding}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="10" Margin="0,0,0,16">
+                <TextBlock Classes="intent" Text="{Binding Library.YoursTitle}" />
+                <ItemsControl Classes="cards" ItemsSource="{Binding Library.Yours}" />
+                <TextBlock Classes="intent" Text="{Binding Library.FromSoundmoteTitle}" Margin="0,18,0,0" />
+                <ItemsControl Classes="cards" ItemsSource="{Binding Library.FromSoundmote}" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- The open scene keeps playing here; Open dial goes back to it. -->
+        <Border Grid.Row="3" HorizontalAlignment="Center" Margin="0,8,0,24" IsVisible="{Binding HasPlayer}"
+                Width="{StaticResource Size.Dock.Width}" Height="{StaticResource Size.Dock.Height}"
+                Padding="{StaticResource Thickness.Dock}" CornerRadius="{StaticResource Radius.Dock}"
+                Background="{DynamicResource Brush.Bg.Panel}" BorderBrush="{DynamicResource Brush.Line.Edge}" BorderThickness="1"
+                BoxShadow="{DynamicResource Shadow.Float}">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                <Button Classes="play" Command="{Binding Player.TogglePlayCommand}" IsEnabled="{Binding Player.CanPlay}"
+                        ToolTip.Tip="Play or pause (space)">
+                    <Panel>
+                        <PathIcon Width="18" Height="18" Data="{StaticResource Icon.Play}" IsVisible="{Binding !Player.IsPlaying}" />
+                        <PathIcon Width="18" Height="18" Data="{StaticResource Icon.Pause}" IsVisible="{Binding Player.IsPlaying}" />
+                    </Panel>
+                </Button>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Classes="dock" Text="{Binding Player.Name}" />
+                    <TextBlock Classes="meta number" Text="{Binding Player.Status}" />
+                </StackPanel>
+                <Button Grid.Column="2" Classes="secondary" Height="38" Padding="16,0" VerticalAlignment="Center"
+                        Content="Open dial" Command="{Binding ShowDialCommand}" />
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

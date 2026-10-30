@@ -1,0 +1,346 @@
+<!-- Buttons on the dial screen (D5). Fluent's look is replaced; only its template remains. -->
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- The round play button: the one filled control on the screen. -->
+    <Style Selector="Button.play">
+        <Setter Property="Width" Value="{StaticResource Size.Button.Play}" />
+        <Setter Property="Height" Value="{StaticResource Size.Button.Play}" />
+        <Setter Property="CornerRadius" Value="22" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.OnPrimary}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.OnPrimary}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.94)" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="0.35" />
+        </Style>
+    </Style>
+
+    <!-- A row in a side panel: a sound or a phase. The background is bound per row. -->
+    <Style Selector="Button.row">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="{StaticResource Thickness.Row}" />
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Row}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="none" />
+        </Style>
+    </Style>
+
+    <!-- Small borderless icon button inside a row: mute. -->
+    <Style Selector="Button.glyph">
+        <Setter Property="Width" Value="28" />
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Secondary}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="none" />
+        </Style>
+    </Style>
+
+    <!-- A sound in the add panel (D9). The button is bare; its content draws the tile and, on trial, a ring in the
+         sound's colour, which a template style could not take from the item. -->
+    <Style Selector="Button.tile">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="none" />
+        </Style>
+        <!-- A family without sounds yet (D20): shown, faint, not clickable. -->
+        <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="0.5" />
+        </Style>
+    </Style>
+
+    <!-- A filled pill: the panel's main action. -->
+    <Style Selector="Button.primary">
+        <Setter Property="Height" Value="44" />
+        <Setter Property="CornerRadius" Value="22" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.OnPrimary}" />
+        <Setter Property="FontWeight" Value="ExtraBold" />
+        <Setter Property="FontSize" Value="13.5" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.OnPrimary}" />
+        </Style>
+        <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.OnPrimary}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="0.35" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.98)" />
+        </Style>
+    </Style>
+
+    <!-- A rounded outline pill: the panel's second action. -->
+    <Style Selector="Button.secondary">
+        <Setter Property="Height" Value="44" />
+        <Setter Property="CornerRadius" Value="22" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Line.Edge}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="13.5" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Line.Edge}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="none" />
+        </Style>
+    </Style>
+
+    <!-- A rounded outline chip: a shape preset. -->
+    <Style Selector="Button.chip">
+        <Setter Property="Height" Value="26" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="CornerRadius" Value="13" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Line.Edge}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="FontSize" Value="11.5" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Line.Edge}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="none" />
+        </Style>
+    </Style>
+
+    <!-- Plain text that acts: Reset. -->
+    <Style Selector="Button.link">
+        <Setter Property="Padding" Value="6,2" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Secondary}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="0.4" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="none" />
+        </Style>
+    </Style>
+
+    <!-- A segment on a pill track: the preview speed. The checked one is filled. -->
+    <!-- A chip that is one of a set: a category, a starting shape. The checked one is filled. -->
+    <Style Selector="ToggleButton.chip">
+        <Setter Property="Height" Value="26" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="Padding" Value="9,0" />
+        <Setter Property="CornerRadius" Value="13" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Line.Edge}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="FontSize" Value="11.5" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Line.Edge}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.OnPrimary}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="none" />
+        </Style>
+    </Style>
+
+    <!-- The four ways a ring plays, on a pill track (D11): compact, equal widths. -->
+    <Style Selector="ToggleButton.mode">
+        <Setter Property="Height" Value="28" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Secondary}" />
+        <Setter Property="FontSize" Value="11.5" />
+        <Setter Property="FontWeight" Value="ExtraBold" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.OnPrimary}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="none" />
+        </Style>
+    </Style>
+
+    <Style Selector="ToggleButton.segment">
+        <Setter Property="Height" Value="32" />
+        <Setter Property="MinWidth" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Segment}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Secondary}" />
+        <Setter Property="FontSize" Value="{StaticResource Text.Segment.Size}" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.OnPrimary}" />
+        </Style>
+        <Style Selector="^:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.OnPrimary}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="none" />
+        </Style>
+    </Style>
+    <!-- The library's filters: a larger chip (D13). -->
+    <Style Selector="ToggleButton.chip.filter">
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Padding" Value="14,0" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <!-- A scene in the library (D13). The card draws its own ground; the button adds only an outline, which marks
+         the playing scene in the library's ink. -->
+    <Style Selector="Button.card">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Bg.Track}" />
+        </Style>
+        <Style Selector="^.playing /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.99)" />
+        </Style>
+    </Style>
+
+    <!-- The one action on the dark bar along the bottom: Undo. -->
+    <Style Selector="Button.onbar">
+        <Setter Property="Padding" Value="16,0" />
+        <Setter Property="CornerRadius" Value="18" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="{DynamicResource Brush.Ink.OnPrimary}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="ExtraBold" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Ink.OnPrimary}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.97)" />
+        </Style>
+    </Style>
+
+    <!-- One of a few larger options where one is chosen: a kind of time, a ground (D14). The chosen one has an ink edge. -->
+    <Style Selector="ToggleButton.option">
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Line.Edge}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Hover}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Line.Edge}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+        </Style>
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="none" />
+        </Style>
+    </Style>
+</Styles>

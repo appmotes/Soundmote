@@ -1,0 +1,18 @@
+{
+  "id": "wind-strong",
+  "name": "Strong wind",
+  "family": "wind",
+  "places": ["outdoors"],
+  "moods": ["wild"],
+  "colour": "#566A80",
+  "character": "Strong wind tearing through bushes and grass",
+  "icon": "wind",
+  "room": 0.05,
+  "trim": 0.528,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["wind-strong"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

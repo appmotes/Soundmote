@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>Soundmote</AssemblyName>
+    <RootNamespace>Soundmote.Desktop</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
+    <RuntimeIdentifiers>osx-arm64;osx-x64;win-x64;win-arm64;linux-x64;linux-arm64</RuntimeIdentifiers>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Soundmote.App\Soundmote.App.csproj" />
+    <ProjectReference Include="..\Soundmote.Audio\Soundmote.Audio.csproj" />
+    <PackageReference Include="Avalonia.Desktop" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Soundmote.Desktop.Tests" />
+    <AvaloniaResource Include="Assets\icon.png" />
+  </ItemGroup>
+</Project>

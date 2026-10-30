@@ -1,0 +1,94 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Soundmote.App.ViewModels"
+        xmlns:v="using:Soundmote.Desktop.Views"
+        xmlns:c="urn:Soundmote.App.Controls"
+        x:Class="Soundmote.Desktop.Shell.MainWindow"
+        x:DataType="vm:ShellViewModel"
+        Title="Soundmote"
+        Icon="/Assets/icon.png"
+        Width="1280" Height="800" MinWidth="1040" MinHeight="680"
+        WindowStartupLocation="CenterScreen"
+        RequestedThemeVariant="{Binding Ground}"
+        Background="{DynamicResource Brush.Bg.Ground}"
+        Foreground="{DynamicResource Brush.Ink.Primary}">
+    <Grid RowDefinitions="Auto,*">
+        <!-- Title strip (D2): the brand where the system has no title bar of its own, the way back to the library on a
+             dial, and Settings at the right. The window sets its margins and height per system. -->
+        <Grid x:Name="Strip" ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="12" Margin="32,0,24,0"
+              Height="{StaticResource Size.TitleBar.Height}">
+            <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <Image x:Name="BrandIcon" Source="/Assets/icon.png" Width="20" Height="20" VerticalAlignment="Center" />
+                <TextBlock x:Name="Brand" Classes="brand" Text="Soundmote" VerticalAlignment="Center" />
+            </StackPanel>
+            <Button Grid.Column="1" Classes="link" Command="{Binding ShowLibraryCommand}" IsVisible="{Binding IsDialOpen}"
+                    VerticalAlignment="Center" ToolTip.Tip="All scenes (Escape)">
+                <StackPanel Orientation="Horizontal" Spacing="2">
+                    <PathIcon Width="12" Height="12" Data="{StaticResource Icon.Back}" />
+                    <TextBlock Text="Scenes" />
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="3" Classes="glyph" Width="32" Height="32" VerticalAlignment="Center"
+                    Command="{Binding OpenSettingsCommand}" ToolTip.Tip="Settings">
+                <c:Glyph Width="16" Height="16" Data="{StaticResource Icon.Settings}" Stroke="2" />
+            </Button>
+        </Grid>
+
+        <v:LibraryView Grid.Row="1" IsVisible="{Binding ShowsLibrary}" />
+        <v:FirstRunView Grid.Row="1" IsVisible="{Binding ShowsFirstRun}" />
+        <Panel Grid.Row="1" IsVisible="{Binding IsDialOpen}">
+            <v:PlayerView DataContext="{Binding Player}" />
+        </Panel>
+
+        <!-- The next first-run hint on the dial (D19), above the dock; doing what it says, or Got it, uses it up. -->
+        <Border Grid.Row="1" IsVisible="{Binding HasHint}" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                Margin="0,0,0,104" Width="420" Padding="18,12,10,12" CornerRadius="16"
+                Background="{DynamicResource Brush.Bg.Panel}" BorderBrush="{DynamicResource Brush.Line.Edge}" BorderThickness="1"
+                BoxShadow="{DynamicResource Shadow.Float}">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="row" Text="{Binding HintTitle}" />
+                    <TextBlock Classes="meta" Text="{Binding HintNote}" TextWrapping="Wrap" />
+                </StackPanel>
+                <Button Grid.Column="1" Classes="link" Content="Got it" VerticalAlignment="Center" Command="{Binding DismissHintCommand}" />
+            </Grid>
+        </Border>
+
+        <!-- What just happened, with Undo after a delete (D13). Above the dock, below a sheet. -->
+        <Border Grid.Row="1" IsVisible="{Binding HasToast}" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                Margin="0,0,0,104" MinWidth="420" Height="52" Padding="18,0,8,0" CornerRadius="26"
+                Background="{DynamicResource Brush.Ink.Primary}" BoxShadow="{DynamicResource Shadow.Float}">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
+                <TextBlock Text="{Binding Toast}" FontSize="13.5" FontWeight="Bold" VerticalAlignment="Center"
+                           Foreground="{DynamicResource Brush.Ink.OnPrimary}" />
+                <Button Grid.Column="1" Classes="onbar" Height="36" Content="Undo" VerticalAlignment="Center"
+                        IsVisible="{Binding CanUndo}" Command="{Binding UndoCommand}" />
+            </Grid>
+        </Border>
+
+        <!-- Bedside (D17): at night, left alone, everything goes dark but a faint ring and the hour. -->
+        <Panel Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsBedside}" Background="{StaticResource Brush.Bedside.Ground}">
+            <Ellipse Width="360" Height="360" Stroke="{StaticResource Brush.Bedside.Faint}" StrokeThickness="1.5" />
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="2">
+                <TextBlock Text="{Binding BedsideTime}" FontSize="{StaticResource Text.Bedside.Size}" FontWeight="Light"
+                           Foreground="{StaticResource Brush.Bedside.Ink}" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding BedsideCaption}" FontSize="14" Foreground="{StaticResource Brush.Bedside.Faint}"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+        </Panel>
+
+        <!-- Settings (D18) over a dimmed window, on the ground behind it. -->
+        <Panel Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsSettingsOpen}" Background="#6B1E2330">
+            <Viewbox StretchDirection="DownOnly" Margin="24">
+                <v:SettingsView DataContext="{Binding Settings}" />
+            </Viewbox>
+        </Panel>
+
+        <!-- The New scene sheet (D14) over a dimmed window. -->
+        <Panel Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsCreating}" Background="#6B1E2330">
+            <Viewbox StretchDirection="DownOnly" Margin="24">
+                <v:NewSceneView DataContext="{Binding NewScene}" />
+            </Viewbox>
+        </Panel>
+    </Grid>
+</Window>

@@ -1,0 +1,18 @@
+{
+  "id": "noise-purifier",
+  "name": "Air purifier",
+  "family": "noise",
+  "places": ["indoors"],
+  "moods": ["calm"],
+  "colour": "#8C8478",
+  "character": "An air purifier humming, smooth and close",
+  "icon": "noise",
+  "room": 0.05,
+  "trim": 0.43,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["noise-purifier"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

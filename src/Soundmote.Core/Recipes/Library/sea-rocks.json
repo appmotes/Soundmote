@@ -1,0 +1,18 @@
+{
+  "id": "sea-rocks",
+  "name": "Waves on rocks",
+  "family": "sea",
+  "places": ["shore"],
+  "moods": ["bright"],
+  "colour": "#2A7A80",
+  "character": "Small waves washing in and out between rocks",
+  "icon": "sea",
+  "room": 0.05,
+  "trim": 0.537,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["sea-rocks"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

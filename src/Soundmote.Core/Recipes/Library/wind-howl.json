@@ -1,0 +1,18 @@
+{
+  "id": "wind-howl",
+  "name": "Howling wind",
+  "family": "wind",
+  "places": ["indoors"],
+  "moods": ["mysterious"],
+  "colour": "#5E6E82",
+  "character": "Low wind howling through the gap under a door",
+  "icon": "wind",
+  "room": 0.05,
+  "trim": 0.393,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["wind-howl"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

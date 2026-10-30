@@ -1,0 +1,18 @@
+{
+  "id": "rhythm-kalimba",
+  "name": "Kalimba",
+  "family": "rhythm",
+  "moods": ["calm", "bright"],
+  "colour": "#D06A88",
+  "character": "Plucked tines on D minor's notes, a slow tune that is never the same",
+  "room": 0.35,
+  "trim": 0.399,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "loop": false, "files": ["hit-kalimba-62", "hit-kalimba-65", "hit-kalimba-67", "hit-kalimba-69", "hit-kalimba-72", "hit-kalimba-74"],
+      "pattern": {"every": 8, "at": [0, 1.5, 3, 4, 5.5, 6], "levels": [1, 0.7, 0.8, 0.9, 0.7, 0.6]},
+      "pitch": [1, 1], "level": [0.85, 1], "spread": 0.5,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

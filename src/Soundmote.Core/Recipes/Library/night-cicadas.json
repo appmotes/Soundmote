@@ -1,0 +1,18 @@
+{
+  "id": "night-cicadas",
+  "name": "Cicadas",
+  "family": "night",
+  "places": ["outdoors"],
+  "moods": ["warm", "bright"],
+  "colour": "#A89A4E",
+  "character": "Cicadas in the heat of a summer day",
+  "icon": "crickets",
+  "room": 0.05,
+  "trim": 0.562,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["night-cicadas"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "8000 + 10000 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

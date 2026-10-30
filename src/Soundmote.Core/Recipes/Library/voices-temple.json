@@ -1,0 +1,18 @@
+{
+  "id": "voices-temple",
+  "name": "Temple chant",
+  "family": "voices",
+  "places": ["temple", "indoors"],
+  "moods": ["calm", "mysterious"],
+  "colour": "#A0577E",
+  "character": "Monks chanting inside a Buddhist temple",
+  "icon": "monks",
+  "room": 0.05,
+  "trim": 0.516,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["voices-temple"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

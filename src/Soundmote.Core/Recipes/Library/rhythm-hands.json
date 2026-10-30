@@ -1,0 +1,28 @@
+{
+  "id": "rhythm-hands",
+  "name": "Hand drums",
+  "family": "rhythm",
+  "moods": ["warm"],
+  "colour": "#C46C5E",
+  "character": "Tuned hand drums on D and A, a low one bending up",
+  "room": 0.25,
+  "trim": 0.375,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "loop": false, "files": ["hit-hand-low"],
+      "pattern": {"every": 4, "at": [0, 2, 2.5], "levels": [1, 0.75, 0.6]},
+      "pitch": [0.98, 1.02], "level": [0.85, 1], "spread": 0.2,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" },
+    { "type": "sample", "loop": false, "files": ["hit-hand-d4"],
+      "pattern": {"every": 4, "at": [0.75, 1.5, 3.5], "levels": [0.6, 0.7, 0.55]},
+      "pitch": [0.98, 1.02], "level": [0.85, 1], "spread": 0.3,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" },
+    { "type": "sample", "loop": false, "files": ["hit-hand-a4"],
+      "pattern": {"every": 4, "at": [2.75], "levels": [0.6]},
+      "pitch": [0.98, 1.02], "level": [0.85, 1], "spread": 0.3,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

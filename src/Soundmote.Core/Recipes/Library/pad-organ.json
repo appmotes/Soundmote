@@ -1,0 +1,19 @@
+{
+  "id": "pad-organ",
+  "name": "Reed organ",
+  "family": "pads",
+  "places": ["temple"],
+  "moods": ["warm", "cosy"],
+  "colour": "#94709A",
+  "character": "A reed organ held on D and A, turning slowly round the room",
+  "room": 0.1,
+  "trim": 0.252,
+  "glide": 0.3,
+  "signals": [ { "name": "slow", "walk": 9 }, { "name": "flutter", "walk": 0.8 } ],
+  "parts": [
+    { "type": "sample", "files": ["pad-organ"], "fade": 4, "change": 40,
+      "tune": "pow(2, waver * (40 * slow + 10 * flutter) / 1200)",
+      "filters": [ { "type": "lowpass", "freq": "800 + 17200 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

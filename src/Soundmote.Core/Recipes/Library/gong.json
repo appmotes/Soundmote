@@ -1,0 +1,18 @@
+{
+  "id": "gong",
+  "name": "Gong",
+  "family": "bells",
+  "places": ["temple"],
+  "moods": ["mysterious"],
+  "colour": "#9A6E3A",
+  "character": "A gong struck and a gong stroked with a mallet",
+  "icon": "bell",
+  "room": 0.2,
+  "trim": 1.086,
+  "glide": 0.05,
+  "parts": [
+    { "type": "sample", "loop": false,
+      "files": ["gong-a-1", "gong-b-1"],
+      "pitch": [0.995, 1.005], "level": [0.7, 1], "spread": 0.3, "gain": "amount" }
+  ]
+}

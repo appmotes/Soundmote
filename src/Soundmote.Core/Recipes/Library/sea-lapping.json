@@ -1,0 +1,18 @@
+{
+  "id": "sea-lapping",
+  "name": "Lapping water",
+  "family": "sea",
+  "places": ["shore"],
+  "moods": ["cosy", "calm"],
+  "colour": "#6CB9AE",
+  "character": "Gentle waves splashing at the water's edge, close by",
+  "icon": "sea",
+  "room": 0.05,
+  "trim": 0.618,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["sea-lapping"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

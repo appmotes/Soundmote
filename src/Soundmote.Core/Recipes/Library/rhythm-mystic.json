@@ -1,0 +1,23 @@
+{
+  "id": "rhythm-mystic",
+  "name": "Frame drums",
+  "family": "rhythm",
+  "moods": ["mysterious"],
+  "colour": "#A8605A",
+  "character": "Frame drum and finger strokes in an old dancing pattern",
+  "room": 0.3,
+  "trim": 0.444,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "loop": false, "files": ["hit-dum"],
+      "pattern": {"every": 4, "at": [0, 2], "levels": [1, 0.8]},
+      "pitch": [0.98, 1.02], "level": [0.85, 1], "spread": 0.2,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" },
+    { "type": "sample", "loop": false, "files": ["hit-tek"],
+      "pattern": {"every": 4, "at": [0.5, 1.5, 3], "levels": [0.6, 0.5, 0.65]},
+      "pitch": [0.98, 1.02], "level": [0.85, 1], "spread": 0.4,
+      "filters": [ { "type": "lowpass", "freq": "1500 + 16500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "rain-tent",
+  "name": "Tent rain",
+  "family": "rain",
+  "places": ["outdoors"],
+  "moods": ["cosy"],
+  "colour": "#93A88A",
+  "character": "Rain pattering on a canvas tent",
+  "icon": "rain",
+  "room": 0.05,
+  "trim": 0.561,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["rain-tent"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

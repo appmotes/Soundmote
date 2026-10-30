@@ -1,0 +1,18 @@
+{
+  "id": "rain-jungle",
+  "name": "Tropical rain",
+  "family": "rain",
+  "places": ["jungle", "forest"],
+  "moods": ["warm"],
+  "colour": "#5E9C86",
+  "character": "Light warm rain dripping through tropical leaves",
+  "icon": "rain",
+  "room": 0.05,
+  "trim": 0.611,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["rain-jungle"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

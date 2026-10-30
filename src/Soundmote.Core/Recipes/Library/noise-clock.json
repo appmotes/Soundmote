@@ -1,0 +1,18 @@
+{
+  "id": "noise-clock",
+  "name": "Wall clock",
+  "family": "noise",
+  "places": ["indoors"],
+  "moods": ["calm", "cosy"],
+  "colour": "#A08A6A",
+  "character": "A wall clock ticking in a silent room",
+  "icon": "noise",
+  "room": 0.1,
+  "trim": 0.9,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["noise-clock"], "fade": 0.05, "change": 600,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

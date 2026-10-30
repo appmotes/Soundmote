@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <!-- The built-in sounds as recipes (S10), read by RecipeLibrary. -->
+    <EmbeddedResource Include="Recipes\Library\*.json" LogicalName="Soundmote.Core.Recipes.Library.%(Filename)%(Extension)" />
+    <!-- Recordings sample parts play (S12, S13), beside the app in Samples/. Made sounds are rendered by the build instead. -->
+    <None Include="Recipes\Samples\*.ogg" Link="Samples\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NVorbis" />
+  </ItemGroup>
+</Project>

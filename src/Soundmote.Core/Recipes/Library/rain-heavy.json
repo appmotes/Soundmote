@@ -1,0 +1,18 @@
+{
+  "id": "rain-heavy",
+  "name": "Downpour",
+  "family": "rain",
+  "places": ["outdoors"],
+  "moods": ["wild"],
+  "colour": "#4F7FA8",
+  "character": "Heavy rain pouring down",
+  "icon": "rain",
+  "room": 0.05,
+  "trim": 0.575,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["rain-heavy"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}

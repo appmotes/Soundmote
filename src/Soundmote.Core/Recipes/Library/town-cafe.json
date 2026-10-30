@@ -1,0 +1,18 @@
+{
+  "id": "town-cafe",
+  "name": "Café",
+  "family": "town",
+  "places": ["town", "indoors"],
+  "moods": ["cosy"],
+  "colour": "#C08A5A",
+  "character": "Murmur and clink in a busy café",
+  "icon": "cafe",
+  "room": 0.05,
+  "trim": 0.525,
+  "glide": 0.3,
+  "parts": [
+    { "type": "sample", "files": ["town-cafe"], "fade": 2, "change": 30,
+      "filters": [ { "type": "lowpass", "freq": "2500 + 15500 * amount", "q": 0.6 } ],
+      "gain": "amount^0.8" }
+  ]
+}
