@@ -36,11 +36,14 @@ public interface IAudioFileWriter : IDisposable
     void Write(ReadOnlySpan<float> interleaved);
 }
 
+/// <summary>The words a player shows for a file: its title, artist and album.</summary>
+public sealed record AudioTags(string Title, string Artist, string Album);
+
 /// <summary>The formats this system can write a scene to, and a writer for each (A17).</summary>
 public interface IAudioFiles
 {
     /// <summary>Best first: M4A where the system has an AAC encoder, then WAV.</summary>
     IReadOnlyList<AudioFormat> Formats { get; }
 
-    IAudioFileWriter Create(AudioFormat format, string path, int sampleRate);
+    IAudioFileWriter Create(AudioFormat format, string path, int sampleRate, AudioTags? tags = null);
 }

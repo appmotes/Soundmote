@@ -39,7 +39,7 @@ Built with .NET 10 and [Avalonia](https://avaloniaui.net) 12. Only free componen
 - **New scenes** from an empty dial or from another scene's sounds, and Duplicate, Rename and Reset for the rest.
 - **Export to a file.** Render a scene to M4A (AAC) or WAV, many times faster than it plays: a whole journey, a number
   of laps of a loop, or hours of a clock scene from the hour you pick. On Linux it is WAV only, as the system has no
-  AAC encoder of its own.
+  AAC encoder of its own. A player lists the file under the artist Soundmote and the album Scenes.
 
 ![The five scenes, each on its own ground](Docs/images/scenes.png)
 

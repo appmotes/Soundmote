@@ -39,7 +39,7 @@ Bygget med .NET 10 og [Avalonia](https://avaloniaui.net) 12. Kun gratis komponen
 - **Nye scener** fra en tom skive eller fra en anden scenes lyde, og Duplikér, Omdøb og Nulstil til resten.
 - **Eksportér til en fil.** Gem en scene som M4A (AAC) eller WAV, mange gange hurtigere end den spiller: en hel
   rejse, et antal omgange af et loop eller timer af en urscene fra den time, du vælger. På Linux kun som WAV, da
-  systemet ikke selv har en AAC-encoder.
+  systemet ikke selv har en AAC-encoder. En afspiller viser filen under kunstneren Soundmote og albummet Scenes.
 
 ![De fem scener, hver på sin egen baggrund](Docs/images/scenes.png)
 

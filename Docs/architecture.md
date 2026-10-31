@@ -175,5 +175,8 @@ the header's sizes are written on dispose, and 32-bit sizes cap a file near 6 ho
 the system's own encoder, so no package is needed: `MacOS/M4aWriter` uses ExtAudioFile, which takes the engine's float
 stereo; `Windows/M4aWriter` uses Media Foundation's sink writer in an MPEG-4 container, fed 16-bit PCM because the
 encoder takes nothing else, with COM methods called by their slot. Linux has no AAC encoder of its own and writes WAV
-only. The head hands the app its `IAudioFiles` (A9); `ExportViewModel` runs the render on the thread pool with a
+only. A file carries `AudioTags`: the scene's name as title, Soundmote as artist and Scenes as album
+(`SceneExport.TagsFor`). WAV keeps them in a LIST INFO chunk after the audio (INAM, IART, IPRD); the macOS M4A writer
+hands them to the audio file under ExtAudioFile as its info dictionary, which becomes MPEG-4 atoms. Windows M4A has no
+tags yet (W11). The head hands the app its `IAudioFiles` (A9); `ExportViewModel` runs the render on the thread pool with a
 `Progress<double>` back to the UI, and deletes the file when the render is cancelled or fails.

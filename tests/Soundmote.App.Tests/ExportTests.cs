@@ -103,7 +103,7 @@ public sealed class ExportTests : IDisposable
         Assert.True(export.IsDone);
         Assert.False(export.IsRendering);
         Assert.Equal("Saved Sit.m4a", export.Message);
-        Assert.Equal(44 + 3 * SceneExport.SampleRate * 4, new FileInfo(path).Length);
+        Assert.Equal((uint)(3 * SceneExport.SampleRate * 4), BitConverter.ToUInt32(File.ReadAllBytes(path), 40));
         export.CloseCommand.Execute(null);
         Assert.False(shell.IsExportOpen);
     }
@@ -154,6 +154,7 @@ public sealed class ExportTests : IDisposable
     {
         public IReadOnlyList<AudioFormat> Formats => formats;
 
-        public IAudioFileWriter Create(AudioFormat format, string path, int sampleRate) => new WavWriter(path, sampleRate);
+        public IAudioFileWriter Create(AudioFormat format, string path, int sampleRate, AudioTags? tags = null) =>
+            new WavWriter(path, sampleRate, tags);
     }
 }

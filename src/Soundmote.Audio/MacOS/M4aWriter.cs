@@ -7,7 +7,7 @@ namespace Soundmote.Audio.MacOS;
 
 /// <summary>
 /// Writes AAC in an M4A file through AudioToolbox's ExtAudioFile, which encodes as it writes (A17). It takes the
-/// engine's float stereo as it is.
+/// engine's float stereo as it is. Tags are handed to the audio file underneath as its info dictionary.
 /// </summary>
 [SupportedOSPlatform("macos")]
 public sealed unsafe partial class M4aWriter : IAudioFileWriter
@@ -20,13 +20,16 @@ public sealed unsafe partial class M4aWriter : IAudioFileWriter
     private const uint AudioConverter = 0x61636E76;   // 'acnv'
     private const uint ConverterConfig = 0x61636366;  // 'accf'
     private const uint EncodeBitRate = 0x62726174;    // 'brat'
+    private const uint UnderlyingFile = 0x6166696C;   // 'afil'
+    private const uint InfoDictionary = 0x696E666F;   // 'info'
+    private const uint Utf8 = 0x08000100;             // kCFStringEncodingUTF8
 
     /// <summary>Bits a second, the same as on Windows, where it is the encoder's highest.</summary>
     public const uint BitRate = 192_000;
 
     private nint _file;
 
-    public M4aWriter(string path, int sampleRate)
+    public M4aWriter(string path, int sampleRate, AudioTags? tags = null)
     {
         var bytes = Encoding.UTF8.GetBytes(Path.GetFullPath(path));
         nint url;
@@ -53,6 +56,7 @@ public sealed unsafe partial class M4aWriter : IAudioFileWriter
             // The file's converter takes the new bit rate only once its configuration is set again, here to none.
             nint config = 0;
             CoreAudio.Check(ExtAudioFileSetProperty(_file, ConverterConfig, (uint)sizeof(nint), &config), "apply the bit rate");
+            if (tags is not null) Tag(tags);
         }
         catch
         {
@@ -60,6 +64,38 @@ public sealed unsafe partial class M4aWriter : IAudioFileWriter
             _file = 0;
             throw;
         }
+    }
+
+    /// <summary>Title, artist and album, under the keys the system's audio files use for them.</summary>
+    private void Tag(AudioTags tags)
+    {
+        nint audioFile;
+        var size = (uint)sizeof(nint);
+        CoreAudio.Check(ExtAudioFileGetProperty(_file, UnderlyingFile, &size, &audioFile), "find the file to tag");
+        var keys = stackalloc nint[] { String("title"), String("artist"), String("album") };
+        var values = stackalloc nint[] { String(tags.Title), String(tags.Artist), String(tags.Album) };
+        var cf = NativeLibrary.Load(CoreFoundation);
+        var dictionary = CFDictionaryCreate(0, keys, values, 3,
+            NativeLibrary.GetExport(cf, "kCFTypeDictionaryKeyCallBacks"), NativeLibrary.GetExport(cf, "kCFTypeDictionaryValueCallBacks"));
+        try
+        {
+            CoreAudio.Check(AudioFileSetProperty(audioFile, InfoDictionary, (uint)sizeof(nint), &dictionary), "tag the file");
+        }
+        finally
+        {
+            CFRelease(dictionary);
+            for (var i = 0; i < 3; i++)
+            {
+                CFRelease(keys[i]);
+                CFRelease(values[i]);
+            }
+        }
+    }
+
+    private static nint String(string text)
+    {
+        var bytes = Encoding.UTF8.GetBytes(text + '\0');
+        fixed (byte* p = bytes) return CFStringCreateWithCString(0, p, Utf8);
     }
 
     public void Write(ReadOnlySpan<float> interleaved)
@@ -101,6 +137,15 @@ public sealed unsafe partial class M4aWriter : IAudioFileWriter
 
     [LibraryImport(CoreFoundation)]
     private static partial void CFRelease(nint value);
+
+    [LibraryImport(CoreFoundation)]
+    private static partial nint CFStringCreateWithCString(nint allocator, byte* text, uint encoding);
+
+    [LibraryImport(CoreFoundation)]
+    private static partial nint CFDictionaryCreate(nint allocator, nint* keys, nint* values, nint count, nint keyCallBacks, nint valueCallBacks);
+
+    [LibraryImport(CoreAudio.AudioToolbox)]
+    private static partial int AudioFileSetProperty(nint file, uint property, uint size, void* data);
 
     [LibraryImport(CoreAudio.AudioToolbox)]
     private static partial int ExtAudioFileCreateWithURL(nint url, uint fileType, AudioStreamBasicDescription* format,

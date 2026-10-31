@@ -20,6 +20,9 @@ public static class SceneExport
     /// <summary>-1 dBFS: the limiter stays below 1, and this leaves room for an encoder's overshoot.</summary>
     public const float Ceiling = 0.891f;
 
+    /// <summary>What a player shows for an exported scene: its name, by Soundmote, on the album Scenes.</summary>
+    public static AudioTags TagsFor(Scene scene) => new(scene.Name, "Soundmote", "Scenes");
+
     /// <summary>The clock of a clock scene moves on after every block, so a block is short against the day.</summary>
     private const int BlockFrames = 2048;
 

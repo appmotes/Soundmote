@@ -26,6 +26,23 @@ public class ExportTests
     }
 
     [Fact]
+    public void A_wav_file_names_its_scene_artist_and_album()
+    {
+        var scene = BuiltInScenes.Sit() with { Length = TimeSpan.FromSeconds(1) };
+        using var stream = new MemoryStream();
+        using (var file = new WavWriter(stream, Rate, tags: SceneExport.TagsFor(scene)))
+            SceneExport.Render(scene, scene.Length, file, cancel: TestContext.Current.CancellationToken);
+        var bytes = stream.ToArray();
+        var list = 44 + Rate * 4;
+
+        Assert.Equal((uint)(bytes.Length - 8), BitConverter.ToUInt32(bytes, 4));
+        Assert.Equal((uint)(Rate * 4), BitConverter.ToUInt32(bytes, 40));
+        Assert.Equal("LIST"u8.ToArray(), bytes[list..(list + 4)]);
+        Assert.Equal((uint)(bytes.Length - list - 8), BitConverter.ToUInt32(bytes, list + 4));
+        Assert.Equal("INFOINAM\u0004\0\0\0Sit\0IART\u000a\0\0\0Soundmote\0IPRD\u0007\0\0\0Scenes\0\0"u8.ToArray(), bytes[(list + 8)..]);
+    }
+
+    [Fact]
     public void Peaks_stay_below_full_scale()
     {
         var scene = BuiltInScenes.Unwind() with { Length = TimeSpan.FromSeconds(20) };
@@ -78,11 +95,15 @@ public class ExportTests
         try
         {
             var scene = BuiltInScenes.FallAsleep() with { Length = TimeSpan.FromSeconds(4) };
-            using (var file = files.Create(AudioFormat.M4a, path, Rate))
+            using (var file = files.Create(AudioFormat.M4a, path, Rate, SceneExport.TagsFor(scene)))
                 SceneExport.Render(scene, scene.Length, file, cancel: TestContext.Current.CancellationToken);
 
             var bytes = File.ReadAllBytes(path);
             Assert.Equal("ftyp"u8.ToArray(), bytes[4..8]);
+            // The tags are MPEG-4 atoms: ©nam, ©ART and ©alb, each followed by its text in a data atom.
+            Assert.True(Contains(bytes, [0xA9, .. "ART"u8]) && Contains(bytes, "Soundmote"u8));
+            Assert.True(Contains(bytes, [0xA9, .. "alb"u8]) && Contains(bytes, "Scenes"u8));
+            Assert.True(Contains(bytes, [0xA9, .. "nam"u8]) && Contains(bytes, "Fall Asleep"u8));
             // 192 kbps is 24 kB a second.
             Assert.InRange(bytes.Length, 4 * 24_000 / 2, 4 * 24_000 * 2);
         }
@@ -102,6 +123,8 @@ public class ExportTests
         for (var i = 0; i < samples.Length; i++) samples[i] = BitConverter.ToInt16(bytes, 44 + i * 2) / 32768f;
         return (bytes, samples);
     }
+
+    private static bool Contains(byte[] bytes, ReadOnlySpan<byte> part) => bytes.AsSpan().IndexOf(part) >= 0;
 
     private static double Rms(ReadOnlySpan<float> samples)
     {

@@ -5,7 +5,7 @@ namespace Soundmote.Core.Output;
 
 /// <summary>
 /// Writes a 16-bit stereo WAV file with triangular dither, block by block. The header's sizes are filled in when it is
-/// disposed, so the stream must be seekable.
+/// disposed, so the stream must be seekable. Tags go in a LIST INFO chunk after the audio, written on dispose.
 /// </summary>
 public sealed class WavWriter : IAudioFileWriter
 {
@@ -16,20 +16,22 @@ public sealed class WavWriter : IAudioFileWriter
 
     private readonly Stream _stream;
     private readonly bool _ownsStream;
+    private readonly AudioTags? _tags;
     private readonly long _start;
     private byte[] _bytes = [];
     private long _dataBytes;
     private Rng _rng = new(0x5EED);
 
-    public WavWriter(string path, int sampleRate) : this(File.Create(path), sampleRate, ownsStream: true)
+    public WavWriter(string path, int sampleRate, AudioTags? tags = null) : this(File.Create(path), sampleRate, ownsStream: true, tags)
     {
     }
 
-    public WavWriter(Stream stream, int sampleRate, bool ownsStream = false)
+    public WavWriter(Stream stream, int sampleRate, bool ownsStream = false, AudioTags? tags = null)
     {
         if (!stream.CanSeek) throw new ArgumentException("A WAV file needs a seekable stream.", nameof(stream));
         _stream = stream;
         _ownsStream = ownsStream;
+        _tags = tags;
         _start = stream.Position;
         using var w = new BinaryWriter(stream, Encoding.ASCII, leaveOpen: true);
         w.Write("RIFF"u8);
@@ -63,13 +65,14 @@ public sealed class WavWriter : IAudioFileWriter
         _dataBytes += count;
     }
 
-    /// <summary>Writes the sizes into the header and leaves the stream at the end of the file.</summary>
+    /// <summary>Writes the tags and the sizes into the header, and leaves the stream at the end of the file.</summary>
     public void Dispose()
     {
+        if (_tags is { } tags) WriteInfo(tags);
         var end = _stream.Position;
         Span<byte> size = stackalloc byte[4];
         _stream.Position = _start + 4;
-        BitConverter.TryWriteBytes(size, (uint)(36 + _dataBytes));
+        BitConverter.TryWriteBytes(size, (uint)(end - _start - 8));
         _stream.Write(size);
         _stream.Position = _start + 40;
         BitConverter.TryWriteBytes(size, (uint)_dataBytes);
@@ -77,6 +80,28 @@ public sealed class WavWriter : IAudioFileWriter
         _stream.Position = end;
         _stream.Flush();
         if (_ownsStream) _stream.Dispose();
+    }
+
+    /// <summary>A LIST INFO chunk: INAM the title, IART the artist, IPRD the album. Each text ends in a zero and is padded to even.</summary>
+    private void WriteInfo(AudioTags tags)
+    {
+        using var info = new MemoryStream();
+        using (var w = new BinaryWriter(info, Encoding.UTF8, leaveOpen: true))
+        {
+            w.Write("INFO"u8);
+            foreach (var (id, text) in new[] { ("INAM", tags.Title), ("IART", tags.Artist), ("IPRD", tags.Album) })
+            {
+                var bytes = Encoding.UTF8.GetBytes(text + '\0');
+                w.Write(Encoding.ASCII.GetBytes(id));
+                w.Write((uint)bytes.Length);
+                w.Write(bytes);
+                if (bytes.Length % 2 == 1) w.Write((byte)0);
+            }
+        }
+        using var chunk = new BinaryWriter(_stream, Encoding.ASCII, leaveOpen: true);
+        chunk.Write("LIST"u8);
+        chunk.Write((uint)info.Length);
+        chunk.Write(info.ToArray());
     }
 
     /// <summary>Renders a source offline into a WAV file.</summary>

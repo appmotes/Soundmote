@@ -202,5 +202,5 @@ whole journey, 1, 2 or 4 laps of a loop, or 1, 2 or 4 hours of a clock scene fro
 under them gives the size and the fade at the end ("About 65 MB · fades out over the last 5 s"). On a system without
 an AAC encoder the track holds WAV alone and the line says why. Export… is the sheet's one filled button: it opens the
 system's save dialog with the scene's name, and the sheet then shows a thin bar with "34 % · about 2 min left" and
-Cancel. Afterwards it says "Saved Fall Asleep.m4a" with Show in Finder and Done; a cancel or a failure says so in the
+Cancel. A player shows the file as the scene's name by Soundmote, on the album Scenes. Afterwards it says "Saved Fall Asleep.m4a" with Show in Finder and Done; a cancel or a failure says so in the
 same place and the choices are there to try again. Sound plays on while a scene exports.

@@ -175,7 +175,7 @@ public sealed partial class ExportViewModel : ObservableObject
         {
             await Task.Run(() =>
             {
-                using var file = files.Create(format, path, SceneExport.SampleRate);
+                using var file = files.Create(format, path, SceneExport.SampleRate, SceneExport.TagsFor(scene));
                 SceneExport.Render(scene, length, file, start, progress, cancel.Token);
             }, cancel.Token);
             _path = path;
