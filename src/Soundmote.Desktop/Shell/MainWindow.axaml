@@ -84,6 +84,13 @@
             </Viewbox>
         </Panel>
 
+        <!-- Export (D24) over a dimmed window, on the ground behind it. -->
+        <Panel Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsExportOpen}" Background="#6B1E2330">
+            <Viewbox StretchDirection="DownOnly" Margin="24">
+                <v:ExportView DataContext="{Binding Export}" />
+            </Viewbox>
+        </Panel>
+
         <!-- The New scene sheet (D14) over a dimmed window. -->
         <Panel Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsCreating}" Background="#6B1E2330">
             <Viewbox StretchDirection="DownOnly" Margin="24">

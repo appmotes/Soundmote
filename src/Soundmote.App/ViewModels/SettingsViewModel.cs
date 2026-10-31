@@ -25,7 +25,7 @@ public sealed partial class SettingsViewModel : ObservableObject
         Keys =
         [
             new("Space", "Play, pause"), new("← →", "Back, on 1 min"), new("1–9", "Mute a ring"), new("Esc", "Let go"),
-            new($"{command}N", "New scene"), new($"{command}D", "Duplicate"), new($"{command},", "Settings")
+            new($"{command}N", "New scene"), new($"{command}D", "Duplicate"), new($"{command}E", "Export"), new($"{command},", "Settings")
         ];
         Refresh();
     }

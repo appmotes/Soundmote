@@ -5,6 +5,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Soundmote.Core\Soundmote.Core.csproj" />
+    <!-- For the system's own encoders in the export tests. -->
+    <ProjectReference Include="..\..\src\Soundmote.Audio\Soundmote.Audio.csproj" />
     <PackageReference Include="xunit.v3" />
     <PackageReference Include="xunit.runner.visualstudio" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />

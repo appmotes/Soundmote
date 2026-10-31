@@ -56,7 +56,8 @@ public partial class App : Application
             // A new seed per launch: the same scenes, never the same sound twice (A6).
             var seed = (ulong)Random.Shared.NextInt64();
             var shell = _shell = new ShellViewModel(BuiltInScenes.All(seed), new SceneStore(SceneStore.DefaultFolder()),
-                host.CreateOutput, seed: seed, reveal: host.Reveal, preferences: new PreferencesStore(PreferencesStore.DefaultPath()))
+                host.CreateOutput, seed: seed, reveal: host.Reveal, preferences: new PreferencesStore(PreferencesStore.DefaultPath()),
+                files: host.Files)
             {
                 SupportsMenuBar = host.SupportsMenuBar
             };

@@ -9,14 +9,14 @@ Soundmote.slnx
 Directory.Build.props        net10.0, Nullable, implicit usings, warnings as errors in Release
 Directory.Packages.props     central package versions (see dependencies.md)
 NuGet.config                 nuget.org only
-src/Soundmote.Core           the sound engine: DSP, sounds, scenes, renderer, WAV writer — no Avalonia, no OS calls
-src/Soundmote.Audio          live output per OS behind IAudioOutput (A7) — no Avalonia
+src/Soundmote.Core           the sound engine: DSP, sounds, scenes, renderer, export, WAV writer — no Avalonia, no OS calls
+src/Soundmote.Audio          live output per OS behind IAudioOutput (A7), the system's AAC encoders (A17) — no Avalonia
 src/Soundmote.App            shared Avalonia UI with no screens: the Dial control, view-models, styles, tokens (A9)
 src/Soundmote.Desktop        the desktop executable and its screens: Program, Shell/MainWindow, Views/LibraryView, Views/PlayerView,
                              Views/NewSceneView
 tools/Soundmote.Sandbox      console prototype: play, render to WAV, measure levels, prepare recordings (S13),
                              make the pads and the rhythms' hits (S16, S18)
-tests/Soundmote.Core.Tests   curves, sounds, renderer, determinism, no allocation on the audio thread (xUnit v3)
+tests/Soundmote.Core.Tests   curves, sounds, renderer, determinism, no allocation on the audio thread, export (xUnit v3)
 tests/Soundmote.App.Tests    view-models, curve words, dial geometry and input, headless (Skia)
 tests/Soundmote.Desktop.Tests the window rendered at 1280 × 800 into bin/…/snapshots for review
 Docs/
@@ -37,8 +37,8 @@ originals and the made sounds' WAVs stay outside the repository.
 | `Dsp/` | Building blocks with no idea of sounds: `Rng`, noise, `Svf`, `OnePole`, `Smoother`, `RandomWalk`, `Reverb` |
 | `Sounds/` | `Sound`, the base of every sound; `Choir`, the one hand-written voice engine recipes call; `Sample`, an audio file in memory (S12) |
 | `Recipes/` | `Recipe` (the JSON format), `Expr`, `RecipeSound` (plays a recipe), `RecipeLibrary` and `Library/*.json` (S10) |
-| `Scenes/` | `Curve`, `Layer`, `Scene`, `TimeKind`, `Intent`, `Ground`, `Play`, `Place`, `SceneRenderer`, `BuiltInScenes`, `SceneFile`, `SceneStore` |
-| `Output/` | `IAudioSource`, `IAudioOutput`, `WavWriter` |
+| `Scenes/` | `Curve`, `Layer`, `Scene`, `TimeKind`, `Intent`, `Ground`, `Play`, `Place`, `SceneRenderer`, `BuiltInScenes`, `SceneFile`, `SceneStore`, `SceneExport` |
+| `Output/` | `IAudioSource`, `IAudioOutput`, `AudioFormat`, `IAudioFileWriter`, `IAudioFiles`, `WavWriter` |
 
 **A3 — A scene is a dial.** A `Scene` has a `TimeKind`, a length and layers. A `Layer` is one ring: a sound kind,
 a `Curve` over the turn (position 0–1, amount 0–1), a colour, drift, reverb send and level.
@@ -160,3 +160,20 @@ counts the scene's beats since it began, paused or not, at that tempo, and befor
 and the tempo (`Sound.Beat`, `Sound.Tempo`). A rhythm places its hits on that beat (S18), so every rhythm, one added
 midway included, plays in time with the rest, and a new tempo is heard from the next block without moving a pitch.
 Seeking and speed move the scene's hand, not the beat. A sound played alone carries its own beat on.
+
+**A17 — Export to a file.** `SceneExport.Render` builds a `SceneRenderer` of its own for the scene as it is now, at
+speed 1 and 48 kHz, and pulls blocks of 2048 frames into an `IAudioFileWriter` as fast as the machine allows (about 60
+times real time for a journey); the live renderer and its output are never touched. Length: a journey whole (its
+morning left out, A14), a loop in laps, a clock scene for hours from an hour of the day. A clock scene reads a
+`TimeProvider` of the export's own, in UTC, that moves on with the frames rendered, so it plays the stretch of day
+asked for. Every sample is scaled to -1 dBFS (the limiter stays below 1, A4, and an encoder may overshoot), with a
+50 ms fade in and a 5 s fade out. A `CancellationToken` is read between blocks; a cancelled file is left for the
+caller to delete.
+
+`IAudioFiles` says which formats the system writes, best first, and makes a writer. Core writes WAV (16-bit, dithered;
+the header's sizes are written on dispose, and 32-bit sizes cap a file near 6 hours). M4A is AAC at 192 kbps through
+the system's own encoder, so no package is needed: `MacOS/M4aWriter` uses ExtAudioFile, which takes the engine's float
+stereo; `Windows/M4aWriter` uses Media Foundation's sink writer in an MPEG-4 container, fed 16-bit PCM because the
+encoder takes nothing else, with COM methods called by their slot. Linux has no AAC encoder of its own and writes WAV
+only. The head hands the app its `IAudioFiles` (A9); `ExportViewModel` runs the render on the thread pool with a
+`Progress<double>` back to the UI, and deletes the file when the render is cancelled or fails.

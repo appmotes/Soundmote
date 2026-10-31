@@ -12,11 +12,9 @@ namespace Soundmote.Audio.MacOS;
 [SupportedOSPlatform("macos")]
 public sealed unsafe partial class AudioQueueOutput : IAudioOutput
 {
-    private const string AudioToolbox = "/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox";
+    private const string AudioToolbox = CoreAudio.AudioToolbox;
     private const int BufferCount = 3;
     private const int FramesPerBuffer = 1024;
-    private const uint LinearPcm = 0x6C70636D; // 'lpcm'
-    private const uint FloatPacked = 1 | 8;     // kAudioFormatFlagIsFloat | kAudioFormatFlagIsPacked
     private const uint VolumeParam = 1;         // kAudioQueueParam_Volume
 
     private nint _queue;
@@ -40,17 +38,7 @@ public sealed unsafe partial class AudioQueueOutput : IAudioOutput
         _source = source;
         _self = GCHandle.Alloc(this);
 
-        var format = new AudioStreamBasicDescription
-        {
-            SampleRate = source.SampleRate,
-            FormatId = LinearPcm,
-            FormatFlags = FloatPacked,
-            BytesPerPacket = 8,
-            FramesPerPacket = 1,
-            BytesPerFrame = 8,
-            ChannelsPerFrame = 2,
-            BitsPerChannel = 32
-        };
+        var format = CoreAudio.FloatStereo(source.SampleRate);
         Check(AudioQueueNewOutput(&format, &OnBufferDone, GCHandle.ToIntPtr(_self), 0, 0, 0, out _queue), "create the queue");
         AudioQueueSetParameter(_queue, VolumeParam, _volume);
 
@@ -99,17 +87,7 @@ public sealed unsafe partial class AudioQueueOutput : IAudioOutput
         buffer->AudioDataByteSize = buffer->AudioDataBytesCapacity;
     }
 
-    private static void Check(int status, string what)
-    {
-        if (status != 0) throw new InvalidOperationException($"Core Audio could not {what} (OSStatus {status}).");
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct AudioStreamBasicDescription
-    {
-        public double SampleRate;
-        public uint FormatId, FormatFlags, BytesPerPacket, FramesPerPacket, BytesPerFrame, ChannelsPerFrame, BitsPerChannel, Reserved;
-    }
+    private static void Check(int status, string what) => CoreAudio.Check(status, what);
 
     [StructLayout(LayoutKind.Sequential)]
     private struct AudioQueueBuffer

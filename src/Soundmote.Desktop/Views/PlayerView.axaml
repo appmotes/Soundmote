@@ -113,6 +113,10 @@
                 </Border>
                 <TextBlock Classes="meta" TextWrapping="Wrap" LineHeight="17"
                            Text="Drag along the ticks to move the hand, or use the arrow keys." />
+                <!-- The scene to a file (D24) -->
+                <Button Classes="link" Padding="0,2" HorizontalAlignment="Left" Content="Export to a file…"
+                        Command="{Binding $parent[Window].((vm:ShellViewModel)DataContext).ExportSceneCommand}"
+                        ToolTip.Tip="Render the scene to an audio file (⌘E)" />
             </StackPanel>
         </Border>
 

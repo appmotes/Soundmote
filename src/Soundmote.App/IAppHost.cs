@@ -12,6 +12,9 @@ public interface IAppHost
     /// <summary>The default output device, or null where the OS has no live output yet (N1).</summary>
     IAudioOutput? CreateOutput();
 
+    /// <summary>The files a scene can be exported to here (A17).</summary>
+    IAudioFiles Files { get; }
+
     /// <summary>The system has a menu bar or tray the app can live in (D16).</summary>
     bool SupportsMenuBar { get; }
 

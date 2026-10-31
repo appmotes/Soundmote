@@ -7,6 +7,7 @@ using Avalonia.Media.Imaging;
 using Soundmote.App.Controls;
 using Soundmote.App.Tests;
 using Soundmote.App.ViewModels;
+using Soundmote.Audio;
 using Soundmote.Core.Scenes;
 using Soundmote.Desktop.Shell;
 
@@ -272,6 +273,16 @@ public class PlayerWindowTests
         Snapshot(shell, "settings.png");
     }
 
+    /// <summary>D24: Export over All Day's dial: a clock scene, so an hour to start from and how many hours.</summary>
+    [AvaloniaFact]
+    public void Window_renders_export()
+    {
+        var (shell, _, _) = Open("All Day");
+        shell.ExportSceneCommand.Execute(null);
+
+        Snapshot(shell, "export.png");
+    }
+
     /// <summary>D19: the first launch, and its first hint on the dial.</summary>
     [AvaloniaFact]
     public void Window_renders_the_first_run_and_a_hint()
@@ -325,13 +336,49 @@ public class PlayerWindowTests
         Close(window, shell);
     }
 
+    /// <summary>D13: a card's … button opens its menu, which has Export… (D24).</summary>
+    [AvaloniaFact]
+    public void The_more_button_opens_the_card_menu()
+    {
+        var (shell, _) = Create();
+        var window = Show(shell);
+        var more = window.GetVisualDescendants().OfType<Avalonia.Controls.Button>().First(b => b.Classes.Contains("glyph")
+            && Avalonia.Controls.ToolTip.GetTip(b) is string tip && tip.StartsWith("Rename"));
+
+        more.RaiseEvent(new Avalonia.Interactivity.RoutedEventArgs(Avalonia.Controls.Button.ClickEvent));
+
+        var menu = more.GetVisualAncestors().OfType<Avalonia.Controls.Control>().First(c => c.ContextMenu is not null).ContextMenu!;
+        Assert.True(menu.IsOpen);
+        Assert.Contains("Export…", menu.Items.OfType<Avalonia.Controls.MenuItem>().Select(i => i.Header as string));
+        menu.Close();
+        Close(window, shell);
+    }
+
+    /// <summary>D7: ⌘E opens Export for the open scene and Escape closes it, before it reaches the dial.</summary>
+    [AvaloniaFact]
+    public void Keys_open_and_close_export()
+    {
+        var (shell, player, _) = Open("Sit");
+        var window = Show(shell);
+        var command = OperatingSystem.IsMacOS() ? RawInputModifiers.Meta : RawInputModifiers.Control;
+
+        window.KeyPress(Key.E, command, PhysicalKey.E, "e");
+        Assert.Equal("Export Sit", shell.Export?.Title);
+        window.KeyPress(Key.Escape, RawInputModifiers.None, PhysicalKey.Escape, null);
+
+        Assert.False(shell.IsExportOpen);
+        Assert.True(shell.IsDialOpen);
+        Assert.True(player.IsPlaying);
+        Close(window, shell);
+    }
+
     private static SceneCardViewModel Card(ShellViewModel shell, string name) => shell.Library.All.Single(c => c.Name == name);
 
     private static (ShellViewModel Shell, FakeOutput Output) Create()
     {
         var output = new FakeOutput();
         var store = new SceneStore(Path.Combine(Scenes, Guid.NewGuid().ToString("N")));
-        return (new ShellViewModel(BuiltInScenes.All(), store, () => output, Afternoon), output);
+        return (new ShellViewModel(BuiltInScenes.All(), store, () => output, Afternoon, files: new AudioFiles()), output);
     }
 
     private static (ShellViewModel Shell, PlayerViewModel Player, FakeOutput Output) Open(string name)

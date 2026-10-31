@@ -59,3 +59,8 @@ Confirm: the ground follows the rise.
 **W10 — What Settings leaves out.** The board also has which output to play through, quieter during calls (needs to
 know when the microphone is in use) and open at login (a login item, a startup entry, an autostart file). Each needs
 code for each system. ⌘Z waits for W4. Confirm: each works on macOS and Windows, and Linux says where it cannot.
+
+**W11 — Export beyond this Mac.** Export (A17, D24) is tried on macOS only. The Windows M4A writer calls Media
+Foundation by its interfaces' slots, checked against the headers but never run; Linux writes WAV only. Confirm: on
+Windows a 45-minute journey exports to an M4A that plays its whole length, and on Linux the sheet offers WAV alone.
+Decide whether Linux gets Ogg Vorbis through the encoder the sandbox already uses (MIT), as a compressed choice.

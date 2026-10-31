@@ -37,6 +37,9 @@ Bygget med .NET 10 og [Avalonia](https://avaloniaui.net) 12. Kun gratis komponen
 - **Ét tempo pr. scene.** Rytmerne er rolige pulser, der bærer pads'ene: et hjerteslag, en blød puls, rammetrommer,
   håndtrommer, en kalimba, en baspuls og flere. Sæt scenens tempo, 40 til 120 slag i minuttet, og alle rytmer følger.
 - **Nye scener** fra en tom skive eller fra en anden scenes lyde, og Duplikér, Omdøb og Nulstil til resten.
+- **Eksportér til en fil.** Gem en scene som M4A (AAC) eller WAV, mange gange hurtigere end den spiller: en hel
+  rejse, et antal omgange af et loop eller timer af en urscene fra den time, du vælger. På Linux kun som WAV, da
+  systemet ikke selv har en AAC-encoder.
 
 ![De fem scener, hver på sin egen baggrund](Docs/images/scenes.png)
 
@@ -50,6 +53,7 @@ Bygget med .NET 10 og [Avalonia](https://avaloniaui.net) 12. Kun gratis komponen
 | `esc` | Luk tilføj-panelet (eller gå tilbage fra en familie), fravælg ringen, derefter tilbage til biblioteket |
 | `⌘N` | Ny scene (`Ctrl` på Windows og Linux) |
 | `⌘D` | Duplikér den åbne scene |
+| `⌘E` | Eksportér den åbne scene til en fil; `esc` annullerer |
 | `⌘,` | Indstillinger; `esc` går tilbage |
 
 De enkelte taster gør intet, mens du skriver i et felt.
@@ -101,7 +105,7 @@ Testene starter den rigtige app uden skærm (Avalonias headless-platform) og teg
 lyd for at tjekke dens lydstyrke, og at intet på lydtråden allokerer.
 
 **Lyd live findes indtil videre kun på macOS.** På Windows og Linux åbner appen og virker, men spiller endnu ikke
-noget (se [Docs/todo.md](Docs/todo.md), N1).
+noget (se [Docs/todo.md](Docs/todo.md), N1). Eksport virker på alle tre.
 
 Sandkassen i `tools/Soundmote.Sandbox` spiller motoren uden appen og forbereder lyde:
 

@@ -1,0 +1,105 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Soundmote.App.ViewModels"
+             x:Class="Soundmote.Desktop.Views.ExportView"
+             x:DataType="vm:ExportViewModel">
+    <UserControl.Styles>
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="ExtraBold" />
+            <Setter Property="LetterSpacing" Value="0.7" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Secondary}" />
+        </Style>
+        <Style Selector="ItemsControl.chips">
+            <Setter Property="ItemsPanel">
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="2" />
+                </ItemsPanelTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="ProgressBar">
+            <Setter Property="Height" Value="6" />
+            <Setter Property="MinHeight" Value="6" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Ink.Primary}" />
+            <Setter Property="Background" Value="{DynamicResource Brush.Bg.Track}" />
+        </Style>
+    </UserControl.Styles>
+
+    <!-- Export (D24): a sheet on the ground of the scene behind it. A format, how much, then the save dialog. -->
+    <Border Width="560" CornerRadius="24" Padding="32,28" Background="{DynamicResource Brush.Bg.Panel}"
+            BoxShadow="0 30 80 0 #59141822" TextElement.Foreground="{DynamicResource Brush.Ink.Primary}">
+        <StackPanel Spacing="20">
+            <StackPanel Spacing="3">
+                <TextBlock Text="{Binding Title}" FontSize="24" FontWeight="ExtraBold" TextTrimming="CharacterEllipsis" />
+                <TextBlock Classes="meta" FontSize="13" Text="Renders the scene to a file, faster than it plays." />
+            </StackPanel>
+
+            <StackPanel Spacing="8" IsEnabled="{Binding IsIdle}">
+                <TextBlock Classes="label" Text="FORMAT" />
+                <StackPanel Orientation="Horizontal" Spacing="14">
+                    <Border Padding="3" CornerRadius="{StaticResource Radius.Segment}" Background="{DynamicResource Brush.Bg.Hover}"
+                            VerticalAlignment="Center">
+                        <ItemsControl Classes="chips" ItemsSource="{Binding Formats}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:ChoiceViewModel">
+                                    <ToggleButton Classes="segment" Height="28" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                                  Command="{Binding $parent[UserControl].((vm:ExportViewModel)DataContext).ChooseFormatCommand}"
+                                                  CommandParameter="{Binding}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Border>
+                    <TextBlock Classes="meta" FontSize="12.5" Text="{Binding FormatNote}" VerticalAlignment="Center"
+                               TextWrapping="Wrap" MaxWidth="360" />
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Spacing="8" IsEnabled="{Binding IsIdle}">
+                <TextBlock Classes="label" Text="LENGTH" />
+                <StackPanel Orientation="Horizontal" Spacing="14">
+                    <Border Padding="3" CornerRadius="{StaticResource Radius.Segment}" Background="{DynamicResource Brush.Bg.Hover}"
+                            VerticalAlignment="Center" IsVisible="{Binding HasLengths}">
+                        <ItemsControl Classes="chips" ItemsSource="{Binding Lengths}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:ChoiceViewModel">
+                                    <ToggleButton Classes="segment" Height="28" Content="{Binding Label}" IsChecked="{Binding IsChecked}"
+                                                  Command="{Binding $parent[UserControl].((vm:ExportViewModel)DataContext).ChooseLengthCommand}"
+                                                  CommandParameter="{Binding}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Border>
+                    <!-- A clock scene starts on an hour of the day -->
+                    <StackPanel Orientation="Horizontal" Spacing="4" IsVisible="{Binding IsClock}" VerticalAlignment="Center">
+                        <Button Classes="glyph" Width="24" Height="24" Content="−" Command="{Binding EarlierCommand}"
+                                ToolTip.Tip="An hour earlier" />
+                        <TextBlock Classes="row number" Text="{Binding StartText}" VerticalAlignment="Center" />
+                        <Button Classes="glyph" Width="24" Height="24" Content="+" Command="{Binding LaterCommand}"
+                                ToolTip.Tip="An hour later" />
+                    </StackPanel>
+                    <TextBlock Classes="row" Text="{Binding LengthText}" VerticalAlignment="Center" />
+                </StackPanel>
+                <TextBlock Classes="meta" FontSize="12.5" Text="{Binding SizeText}" />
+            </StackPanel>
+
+            <StackPanel Spacing="8" IsVisible="{Binding IsRendering}">
+                <ProgressBar Minimum="0" Maximum="1" Value="{Binding Progress}" />
+                <TextBlock Classes="meta number" FontSize="12.5" Text="{Binding ProgressText}" />
+            </StackPanel>
+
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                <TextBlock Classes="row" Text="{Binding Message}" IsVisible="{Binding HasMessage}" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis" />
+                <Button Grid.Column="1" Classes="secondary" Height="38" Padding="18,0" Content="Cancel"
+                        Command="{Binding CancelCommand}" IsVisible="{Binding !IsDone}" ToolTip.Tip="Escape" />
+                <Button Grid.Column="2" Classes="primary" Height="38" Padding="18,0" Content="Export…"
+                        Click="OnExport" IsVisible="{Binding IsIdle}" />
+                <Button Grid.Column="1" Classes="secondary" Height="38" Padding="16,0" Content="{Binding RevealText}"
+                        Command="{Binding RevealCommand}" IsVisible="{Binding IsDone}" />
+                <Button Grid.Column="2" Classes="primary" Height="38" Padding="18,0" Content="Done"
+                        Command="{Binding CloseCommand}" IsVisible="{Binding IsDone}" />
+            </Grid>
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -48,7 +48,7 @@ follow the curve, so they change when the ring is reshaped. Other ways to play h
 **D7 — Keys.** Space plays and pauses, ← → move the hand a minute, 1–9 mute a ring. Escape closes the add panel,
 else clears the selection, else goes back to the library. In the library only space works, on the open scene. ⌘N
 (Ctrl+N on Windows and Linux) opens New scene, ⌘D duplicates the open scene, ⌘, opens Settings and Escape closes it; on the sheet Return creates and Escape
-cancels. Handled on the window in the tunnel phase; single keys only with no modifier held, and left alone while a
+cancels. ⌘E opens Export for the open scene (D24), where Escape cancels a render, else closes the sheet. Handled on the window in the tunnel phase; single keys only with no modifier held, and left alone while a
 text box has focus.
 
 **D8 — Shaping a ring.** A ring is shaped where it is drawn. Selecting it shows its curve's points on its outer edge;
@@ -100,7 +100,7 @@ library's ink, shows PLAYING and its hand moves. Going back keeps the scene play
 like the dock: play, name, status and Open dial.
 
 The library has two rows of cards: Yours, ending with a dashed New scene card, then From Soundmote. A card's menu
-(right-click, or its … button) has Open, Rename, Duplicate, Ground, Show in Finder (Explorer, Files), and Delete for
+(right-click, or its … button) has Open, Rename, Duplicate, Export… (D24), Ground, Show in Finder (Explorer, Files), and Delete for
 the user's own or Reset to original for a changed built-in. Built-in scenes cannot be deleted. Rename happens in
 place on the card: Return keeps, Escape leaves, an empty name changes nothing. Duplicate makes "Sit 2" among Yours and
 opens it. A pill in the card's corner says Just made or Changed and gives way to PLAYING. A dark bar above the dock
@@ -194,3 +194,13 @@ from Slow to Quick, 40 to 120 beats a minute, and the tempo in words ("60 beats 
 not the ring's: every rhythm in the scene follows it and they stay in time, so it shows the same on each rhythm's ring.
 A resting pulse, 60, is the default; Unwind moves at 90.
 
+**D24 — Export.** A scene leaves the app as a file through a sheet of 560 wide over the dimmed window, on the ground of
+the scene behind it, like Settings (D18). It opens from a card's menu (Export…), from "Export to a file…" under the
+dial's left panel, and with ⌘E. "Export Fall Asleep" over one line of what it does, then two rows: Format, a pill
+track of M4A and WAV (M4A first: small and played everywhere) with what each is in words, and Length, which is the
+whole journey, 1, 2 or 4 laps of a loop, or 1, 2 or 4 hours of a clock scene from an hour set with − and +. A line
+under them gives the size and the fade at the end ("About 65 MB · fades out over the last 5 s"). On a system without
+an AAC encoder the track holds WAV alone and the line says why. Export… is the sheet's one filled button: it opens the
+system's save dialog with the scene's name, and the sheet then shows a thin bar with "34 % · about 2 min left" and
+Cancel. Afterwards it says "Saved Fall Asleep.m4a" with Show in Finder and Done; a cancel or a failure says so in the
+same place and the choices are there to try again. Sound plays on while a scene exports.

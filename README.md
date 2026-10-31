@@ -37,6 +37,9 @@ Built with .NET 10 and [Avalonia](https://avaloniaui.net) 12. Only free componen
 - **One tempo per scene.** Rhythms are calm pulses that carry the pads: a heartbeat, a soft pulse, frame drums, hand
   drums, a kalimba, a bass pulse and more. Set the scene's tempo, 40 to 120 beats a minute, and every rhythm follows.
 - **New scenes** from an empty dial or from another scene's sounds, and Duplicate, Rename and Reset for the rest.
+- **Export to a file.** Render a scene to M4A (AAC) or WAV, many times faster than it plays: a whole journey, a number
+  of laps of a loop, or hours of a clock scene from the hour you pick. On Linux it is WAV only, as the system has no
+  AAC encoder of its own.
 
 ![The five scenes, each on its own ground](Docs/images/scenes.png)
 
@@ -50,6 +53,7 @@ Built with .NET 10 and [Avalonia](https://avaloniaui.net) 12. Only free componen
 | `esc` | Close the add panel (or go back from a family), deselect the ring, then back to the library |
 | `⌘N` | New scene (`Ctrl` on Windows and Linux) |
 | `⌘D` | Duplicate the open scene |
+| `⌘E` | Export the open scene to a file; `esc` cancels |
 | `⌘,` | Settings; `esc` goes back |
 
 The single keys do nothing while you type in a field.
@@ -100,7 +104,7 @@ The tests start the real app without a screen (Avalonia's headless platform) and
 every sound to check its loudness and that nothing on the audio thread allocates.
 
 **Live sound is macOS only for now.** On Windows and Linux the app opens and works, but plays nothing yet (see
-[Docs/todo.md](Docs/todo.md), N1).
+[Docs/todo.md](Docs/todo.md), N1). Export works on all three.
 
 The sandbox in `tools/Soundmote.Sandbox` plays the engine without the app and prepares sounds:
 

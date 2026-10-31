@@ -35,6 +35,7 @@
                         <MenuItem Header="Open" Click="OnOpen" />
                         <MenuItem Header="Rename" Click="OnRename" />
                         <MenuItem Header="Duplicate" Click="OnDuplicate" />
+                        <MenuItem Header="Export…" Click="OnExport" />
                         <MenuItem Header="Ground">
                             <MenuItem Header="Night" Tag="Night" Click="OnGround" />
                             <MenuItem Header="Ember" Tag="Ember" Click="OnGround" />
@@ -89,7 +90,7 @@
                                  VerticalAlignment="Bottom" Margin="8,0,8,36" Height="34" FontSize="17"
                                  KeyDown="OnRenameKey" LostFocus="OnRenameLeft" PropertyChanged="OnRenameShown" />
                         <Button Classes="glyph" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                Margin="0,0,12,12" Click="OnMore" ToolTip.Tip="Rename, duplicate, ground…">
+                                Margin="0,0,12,12" Click="OnMore" ToolTip.Tip="Rename, duplicate, export…">
                             <PathIcon Width="16" Height="16" Data="{StaticResource Icon.More}" />
                         </Button>
                     </Panel>

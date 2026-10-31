@@ -23,6 +23,8 @@ public partial class LibraryView : UserControl
 
     private void OnDuplicate(object? sender, RoutedEventArgs e) => Shell?.DuplicateCommand.Execute(Card(sender));
 
+    private void OnExport(object? sender, RoutedEventArgs e) => Shell?.ExportSceneCommand.Execute(Card(sender));
+
     private void OnReveal(object? sender, RoutedEventArgs e) => Shell?.RevealCommand.Execute(Card(sender));
 
     private void OnDelete(object? sender, RoutedEventArgs e) => Shell?.DeleteCommand.Execute(Card(sender));
@@ -32,11 +34,17 @@ public partial class LibraryView : UserControl
     private void OnGround(object? sender, RoutedEventArgs e) =>
         Shell?.SetGroundCommand.Execute(new GroundChoice(Card(sender), Enum.Parse<Ground>((string)((MenuItem)sender!).Tag!)));
 
-    /// <summary>The … button opens the card's own menu under it.</summary>
+    /// <summary>
+    /// The … button opens the card's own menu under it. A menu opens only on the control that holds it, so the button
+    /// is its placement target instead.
+    /// </summary>
     private void OnMore(object? sender, RoutedEventArgs e)
     {
         var button = (Control)sender!;
-        button.GetVisualAncestors().OfType<Control>().FirstOrDefault(c => c.ContextMenu is not null)?.ContextMenu!.Open(button);
+        if (button.GetVisualAncestors().OfType<Control>().FirstOrDefault(c => c.ContextMenu is not null) is not { } card) return;
+        var menu = card.ContextMenu!;
+        menu.PlacementTarget = button;
+        menu.Open(card);
     }
 
     private void OnRenameShown(object? sender, AvaloniaPropertyChangedEventArgs e)

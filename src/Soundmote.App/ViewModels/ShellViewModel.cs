@@ -29,6 +29,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     private readonly TimeProvider _clock;
     private readonly ulong _seed;
     private readonly Action<string>? _reveal;
+    private readonly IAudioFiles? _files;
     private SceneCardViewModel? _open;
     private SceneCardViewModel? _unsaved;
     private DateTimeOffset _editedAt;
@@ -44,9 +45,12 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     /// <param name="reveal">Shows a file or folder in the system's file browser.</param>
     /// <param name="preferences">Where settings are kept; without one, settings live in memory and start as
     /// <see cref="Preferences.Seasoned"/>.</param>
+    /// <param name="files">The files a scene can be exported to (A17); without them there is no Export.</param>
     public ShellViewModel(IReadOnlyList<Scene> builtIn, SceneStore store, Func<IAudioOutput?> outputs,
-        TimeProvider? clock = null, ulong seed = 1, Action<string>? reveal = null, PreferencesStore? preferences = null)
+        TimeProvider? clock = null, ulong seed = 1, Action<string>? reveal = null, PreferencesStore? preferences = null,
+        IAudioFiles? files = null)
     {
+        _files = files;
         _preferencesStore = preferences;
         Preferences = preferences?.Load() ?? Preferences.Seasoned;
         _store = store;
@@ -99,8 +103,26 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private void OpenSettings()
     {
+        if (IsExportOpen) return;
         NewScene = null;
         Settings ??= new SettingsViewModel(this, () => Settings = null);
+    }
+
+    /// <summary>The Export sheet while it is open (D24).</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsExportOpen))]
+    public partial ExportViewModel? Export { get; private set; }
+
+    public bool IsExportOpen => Export is not null;
+
+    /// <summary>Opens the Export sheet for a scene, or for the open scene when none is given (D24).</summary>
+    [RelayCommand]
+    private void ExportScene(SceneCardViewModel? card)
+    {
+        if (_files is null || Export is not null || (card ?? _open) is not { } target) return;
+        Settings = null;
+        NewScene = null;
+        Export = new ExportViewModel(target.Scene, _files, () => Export = null, _reveal, _clock);
     }
 
     /// <summary>The changed built-in scenes, which Reset all brings back.</summary>
@@ -302,6 +324,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private void StartNewScene()
     {
+        if (IsExportOpen) return;
         Settings = null;
         NewScene ??= new NewSceneViewModel(Library.All.Select(c => c.Scene).ToArray(), Created, Preferences.NewGround);
     }
@@ -445,7 +468,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     {
         var local = _clock.GetLocalNow();
         var night = player.Scene.Intent == Intent.Sleep || local.Hour >= 22 || local.Hour < 7;
-        IsBedside = Preferences.DimAtNight && IsDialOpen && !IsSettingsOpen && player.IsPlaying && !player.IsWaking && night
+        IsBedside = Preferences.DimAtNight && IsDialOpen && !IsSettingsOpen && !IsExportOpen && player.IsPlaying && !player.IsWaking && night
             && now - _touchedAt >= BedsideAfter;
         if (!IsBedside) return;
         BedsideTime = SceneText.TimeOfDay(local);
@@ -457,6 +480,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
 
     public void Dispose()
     {
+        Export?.CloseCommand.Execute(null);
         Save();
         Player?.Dispose();
     }

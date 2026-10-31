@@ -19,7 +19,8 @@ on 2026-10-19.
 | Microsoft.NET.Test.Sdk | 18.11.0 | MIT | tests | Test host |
 
 The engine has one package, to read Ogg Vorbis; both Vorbis packages bring System.Memory (MIT), which .NET 10 has
-built in. Live output on macOS uses the system's AudioToolbox framework (A7).
+built in. Live output on macOS uses the system's AudioToolbox framework (A7). Export to M4A uses the system's own AAC encoder:
+AudioToolbox on macOS and Media Foundation on Windows (A17); no package, and none of their code ships with the app.
 
 **Recordings**
 

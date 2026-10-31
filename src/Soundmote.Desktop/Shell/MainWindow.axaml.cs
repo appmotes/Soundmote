@@ -87,7 +87,8 @@ public partial class MainWindow : Window
     }
 
     /// <summary>
-    /// Keys (D7): ⌘N (Ctrl+N) opens New scene, ⌘D duplicates the open scene and ⌘, opens Settings, where Escape closes.
+    /// Keys (D7): ⌘N (Ctrl+N) opens New scene, ⌘D duplicates the open scene, ⌘E exports it and ⌘, opens Settings;
+    /// Escape closes Settings, and on Export cancels a render or closes the sheet.
     /// On the New scene sheet, Return creates and Escape cancels. Single keys: space plays, arrows move the hand a
     /// minute, digits mute a ring, Escape closes, clears, then goes back to the library. In the library only space
     /// works, on the open scene.
@@ -102,6 +103,13 @@ public partial class MainWindow : Window
             return;
         }
         var command = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+        if (shell.Export is { } export)
+        {
+            if (e.Key != Key.Escape) return;
+            export.CancelCommand.Execute(null);
+            e.Handled = true;
+            return;
+        }
         if (shell.Settings is { } settings)
         {
             if (e.Key == Key.Escape) settings.CloseCommand.Execute(null);
@@ -123,9 +131,10 @@ public partial class MainWindow : Window
             e.Handled = true;
             return;
         }
-        if (e.KeyModifiers == command && e.Key is Key.N or Key.D)
+        if (e.KeyModifiers == command && e.Key is Key.N or Key.D or Key.E)
         {
             if (e.Key == Key.N) shell.StartNewSceneCommand.Execute(null);
+            else if (e.Key == Key.E) shell.ExportSceneCommand.Execute(null);
             else if (shell.OpenCard is { } open) shell.DuplicateCommand.Execute(open);
             e.Handled = true;
             return;

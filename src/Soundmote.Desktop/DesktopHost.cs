@@ -26,6 +26,8 @@ public sealed class DesktopHost : IAppHost
         if (window is MainWindow main) main.HideOnClose = hide;
     }
 
+    public IAudioFiles Files { get; } = new AudioFiles();
+
     public IAudioOutput? CreateOutput() => AudioOutputs.LivePlaybackSupported ? AudioOutputs.CreateDefault() : null;
 
     public void Reveal(string path)
